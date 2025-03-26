@@ -1,2 +1,4 @@
-package PACKAGE_NAME;public class MealPlan {
+public class MealPlan {
+    HashMap<String day, Recipe> weeklyMealPlan;
+
 }

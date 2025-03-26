@@ -1,2 +1,4 @@
-package PACKAGE_NAME;public class Inventory {
+public class Inventory {
+    //the inventory
+
 }

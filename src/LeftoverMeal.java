@@ -1,2 +1,2 @@
-package PACKAGE_NAME;public class LeftoverMeal {
+public class LeftoverMeal {
 }
