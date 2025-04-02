@@ -6,7 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="0dff23fb-a8c1-48c8-8718-928e25bc1479" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MealPlan.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MealPlan.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/LeftoverMeal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/LeftoverMeal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Recipe.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Recipe.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ShoppingList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ShoppingList.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -23,19 +24,8 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "atjack19"
-  }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/atjack19/IA-time.git",
-    "accountId": "b7d05b10-95cb-44f1-b18f-ce82dc27bdd8"
-  }
-}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
 }</component>

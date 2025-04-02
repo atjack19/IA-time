@@ -1,2 +1,3 @@
-public class LeftoverMeal {
+public class LeftoverMeal extends Recipe{
+
 }
