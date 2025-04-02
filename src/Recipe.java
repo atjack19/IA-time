@@ -55,6 +55,16 @@ public class Recipe {
         return tags;
     }
 
-    public void addRecipe()
+    public void addRecipe(String name, String category, String book, int page, Ingredient[] ingredients, int calories, int protein, int carbs, int sugars, int fats, String[] tags) {
+        String line = name + "," + category + "," + book + "," + page + ",";
+        for (Ingredient ingredient : ingredients) {
+            line += ingredient + ";";
+        }
+        line = line + "," + calories + "," + protein + "," + carbs + "," + sugars + "," + fats + ",";
+        for (String tag : tags) {
+            line += tag + ";";
+        }
+        FileHandler.writeToFile("recipes.txt", line, true); // add an arraylist of recipe names to ensure no duplicates
+    }
 
 }
