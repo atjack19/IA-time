@@ -11,7 +11,7 @@ public class MealPlan {
         return weeklyMealPlan.getOrDefault(day, null);
     }
 
-    public ShoppingList generateShoppingList(HashMap weeklyMealPlan) {
-        //generate shopping list
-    }
+//    public ShoppingList generateShoppingList(HashMap weeklyMealPlan) {
+//        //generate shopping list
+//    }
 }
