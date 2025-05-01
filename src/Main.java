@@ -51,5 +51,7 @@ public class Main {
         FileHandler.addRecipe(name, book, page, ingredients, calories, protein, carbs, sugars, fats, tags);
 
         System.out.println("New recipe added successfully!");
+
+        System.out.println(FileHandler.recipeFileRead());
     }
 }

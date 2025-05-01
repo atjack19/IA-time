@@ -21,6 +21,12 @@ public class FileHandler {
         return null;
     }
 
+    public static void recipeFileSearch(String term) {
+        // create a sort - merge sort
+        // then, binary search for the name
+        // separate searches for different terms
+    }
+
     public static void writeToFile(String fileName, String text, boolean append) {
         // write text to fileName, overwriting (append = false) or appending (append = true)
         try (
