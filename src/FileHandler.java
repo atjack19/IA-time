@@ -22,7 +22,7 @@ public class FileHandler {
     }
 
     public static void recipeFileSearch(String term) {
-        // create a sort - merge sort
+
         // then, binary search for the name
         // separate searches for different terms
     }
