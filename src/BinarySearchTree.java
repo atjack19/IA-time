@@ -1,4 +1,3 @@
-
 public class BinarySearchTree {
     private BinaryTreeNode root;
 
@@ -38,40 +37,6 @@ public class BinarySearchTree {
             }
         }
     }
-
-    public void add(String term) { //
-        BinaryTreeNode leaf = new BinaryTreeNode(term);
-
-        //trivial case tree is empty
-        if (root == null) {
-            root = leaf;
-            return;
-        }
-
-        //for all others find the correct point of insertion
-        BinaryTreeNode current = root;
-        boolean done = false;
-        while (!done) {
-            if (term <= current.getValue()) {
-                if (current.getLeft() == null) {
-                    //we've arrived
-                    current.setLeft(leaf);
-                    done = true;
-                } else {
-                    current = current.getLeft();
-                }
-            } else {
-                if (current.getRight() == null) {
-                    //we've arrived
-                    current.setRight(leaf);
-                    done = true;
-                } else {
-                    current = current.getRight();
-                }
-            }
-        }
-    }
-
 
     private void traverseInOrder(BinaryTreeNode startingNode) {
         if (startingNode == null) { //base case for recursion

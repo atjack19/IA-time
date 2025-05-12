@@ -1,6 +1,5 @@
 public class BinaryTreeNode {
     private int value;
-    private String term;
     private BinaryTreeNode left;
     private BinaryTreeNode right;
 
@@ -10,18 +9,8 @@ public class BinaryTreeNode {
         right = null;
     }
 
-    public BinaryTreeNode(String t) {
-        term = t;
-        left = null;
-        right = null;
-    }
-
     public int getValue() {
-        if (value == null) {
-            return term;
-        } else {
-            return value;
-        }
+        return value;
     }
 
     public BinaryTreeNode getLeft() {
