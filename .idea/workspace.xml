@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0dff23fb-a8c1-48c8-8718-928e25bc1479" name="Changes" comment="dgdghdrgregbr">
-      <change afterPath="$PROJECT_DIR$/src/GUI.java" afterDir="false" />
+    <list default="true" id="0dff23fb-a8c1-48c8-8718-928e25bc1479" name="Changes" comment="GUI begins">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,12 +29,12 @@
     &quot;assignee&quot;: &quot;atjack19&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/atjack19/IA-time.git",
-    "accountId": "0ea819e5-7152-4b86-80b2-93843f9ecf64"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/atjack19/IA-time.git&quot;,
+    &quot;accountId&quot;: &quot;0ea819e5-7152-4b86-80b2-93843f9ecf64&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
 }</component>
@@ -69,6 +68,15 @@
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\admir\IdeaProjects\IA-time" />
     </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="Main" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="Main" />
+      <module name="IA-time" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -112,7 +120,15 @@
       <option name="project" value="LOCAL" />
       <updated>1746707082139</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="GUI begins">
+      <option name="closed" value="true" />
+      <created>1747211159485</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1747211159485</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -121,6 +137,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="yabbadabbadoo 2" />
     <MESSAGE value="dgdghdrgregbr" />
-    <option name="LAST_COMMIT_MESSAGE" value="dgdghdrgregbr" />
+    <MESSAGE value="GUI begins" />
+    <option name="LAST_COMMIT_MESSAGE" value="GUI begins" />
   </component>
 </project>
