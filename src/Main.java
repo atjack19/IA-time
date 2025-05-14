@@ -58,10 +58,12 @@ public class Main {
 
         BinarySearchTree bst = new BinarySearchTree();
         for (int i = 0; i < data.length; i++) {
-            System.out.println("adding " + data[i]);
+            //System.out.println("adding " + data[i]);
             bst.add(data[i]);
         }
 
-        bst.display();
+        //bst.display();
+
+        GUI myGUI = new GUI();
     }
 }
