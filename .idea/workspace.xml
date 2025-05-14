@@ -105,7 +105,8 @@
       <workItem from="1743937893224" duration="12954000" />
       <workItem from="1744018175438" duration="6277000" />
       <workItem from="1747233121992" duration="1174000" />
-      <workItem from="1747234345477" duration="5133000" />
+      <workItem from="1747234345477" duration="5170000" />
+      <workItem from="1747248167296" duration="669000" />
     </task>
     <task id="LOCAL-00001" summary="yabbadabbadoo 2">
       <option name="closed" value="true" />
@@ -139,7 +140,15 @@
       <option name="project" value="LOCAL" />
       <updated>1747211159485</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="continuing GUI - jpanels maybe?">
+      <option name="closed" value="true" />
+      <created>1747247416735</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1747247416735</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

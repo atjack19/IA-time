@@ -34,7 +34,9 @@ public class GUI extends JFrame {
         recipeButton.setBounds(75,50,standardWidth,standardHeight);
 
         stockButton = new JButton("Stock");
-        stockButton.setBounds(-50,50,standardWidth,standardHeight);
+        System.out.println(containerWidth);
+        System.out.println(containerWidth-standardWidth-50);
+        stockButton.setBounds(containerWidth-standardWidth-50,50,standardWidth,standardHeight);
 
         monButton = new JButton("Monday");
         monButton.setBounds(75,75,150,30);
