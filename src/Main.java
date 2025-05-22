@@ -63,6 +63,7 @@ public class Main {
         }
 
         bst.display();
+        bst.reverseDisplay();
 
         int[] data2 = {17,37,19,1,4,15};
 
@@ -72,6 +73,7 @@ public class Main {
         }
 
         bst2.display();
+        bst2.reverseDisplay();
 
         //GUI myGUI = new GUI();
     }

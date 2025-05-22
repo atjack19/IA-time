@@ -86,6 +86,19 @@ public class BinarySearchTree {
         traverseInOrder(startingNode.getRight());
     }
 
+    private void reverseTraverseInOrder(BinaryTreeNode startingNode) {
+        if (startingNode == null) { //base case for recursion
+            return;
+        }
+        //in-order traversal
+        //traverse right if possible
+        reverseTraverseInOrder(startingNode.getRight());
+        //display node value
+        System.out.print(startingNode.getValue() + ", ");
+        //traverse left if possible
+        reverseTraverseInOrder(startingNode.getLeft());
+    }
+
     private void traverseInOrder(BinaryTreeNodeString startingNode) {
         if (startingNode == null) { //base case for recursion
             return;
@@ -99,11 +112,33 @@ public class BinarySearchTree {
         traverseInOrder(startingNode.getRight());
     }
 
+    private void reverseTraverseInOrder(BinaryTreeNodeString startingNode) {
+        if (startingNode == null) { //base case for recursion
+            return;
+        }
+        //in-order traversal
+        //traverse right if possible
+        reverseTraverseInOrder(startingNode.getRight());
+        //display node value
+        System.out.print(startingNode.getValue() + ", ");
+        //traverse left if possible
+        reverseTraverseInOrder(startingNode.getLeft());
+    }
+
     public void display() {
         if (root == null) {
             traverseInOrder(stringRoot);
         } else {
             traverseInOrder(root);
+        }
+        System.out.println();
+    }
+
+    public void reverseDisplay() {
+        if (root == null) {
+            reverseTraverseInOrder(stringRoot);
+        } else {
+            reverseTraverseInOrder(root);
         }
         System.out.println();
     }
