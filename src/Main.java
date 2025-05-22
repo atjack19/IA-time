@@ -64,6 +64,15 @@ public class Main {
 
         bst.display();
 
+        int[] data2 = {17,37,19,1,4,15};
+
+        BinarySearchTree bst2 = new BinarySearchTree();
+        for (int datum : data2) {
+            bst2.add(datum);
+        }
+
+        bst2.display();
+
         //GUI myGUI = new GUI();
     }
 }

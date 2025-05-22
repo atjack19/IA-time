@@ -53,7 +53,7 @@ public class BinarySearchTree {
         BinaryTreeNodeString current = stringRoot;
         boolean done = false;
         while (!done) {
-            if (v.compareToIgnoreCase(current.getValue()) == 0 || v.compareToIgnoreCase(current.getValue()) == -1) { //less than or equal to
+            if (v.compareToIgnoreCase(current.getValue()) <= 0) { //less than or equal to
                 if (current.getLeft() == null) {
                     //we've arrived
                     current.setLeft(leaf);
@@ -74,7 +74,6 @@ public class BinarySearchTree {
     }
 
     private void traverseInOrder(BinaryTreeNode startingNode) {
-        System.out.println("TESTING");
         if (startingNode == null) { //base case for recursion
             return;
         }
@@ -88,7 +87,6 @@ public class BinarySearchTree {
     }
 
     private void traverseInOrder(BinaryTreeNodeString startingNode) {
-        System.out.println("TESTING STRING");
         if (startingNode == null) { //base case for recursion
             return;
         }
@@ -102,7 +100,11 @@ public class BinarySearchTree {
     }
 
     public void display() {
-        traverseInOrder(root);
+        if (root == null) {
+            traverseInOrder(stringRoot);
+        } else {
+            traverseInOrder(root);
+        }
         System.out.println();
     }
 }
