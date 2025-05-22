@@ -74,6 +74,21 @@ public class BinarySearchTree {
     }
 
     private void traverseInOrder(BinaryTreeNode startingNode) {
+        System.out.println("TESTING");
+        if (startingNode == null) { //base case for recursion
+            return;
+        }
+        //in-order traversal
+        //traverse left if possible
+        traverseInOrder(startingNode.getLeft());
+        //display node value
+        System.out.print(startingNode.getValue() + ", ");
+        //traverse right if possible
+        traverseInOrder(startingNode.getRight());
+    }
+
+    private void traverseInOrder(BinaryTreeNodeString startingNode) {
+        System.out.println("TESTING STRING");
         if (startingNode == null) { //base case for recursion
             return;
         }

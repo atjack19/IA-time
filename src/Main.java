@@ -57,13 +57,13 @@ public class Main {
         String[] data = {"house","car","wall","dog","apple","soup","School","Alphabetical","Zoo"};
 
         BinarySearchTree bst = new BinarySearchTree();
-        for (int i = 0; i < data.length; i++) {
+        for (String datum : data) {
             //System.out.println("adding " + data[i]);
-            bst.add(data[i]);
+            bst.add(datum);
         }
 
-        //bst.display();
+        bst.display();
 
-        GUI myGUI = new GUI();
+        //GUI myGUI = new GUI();
     }
 }
