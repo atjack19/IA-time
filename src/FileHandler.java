@@ -21,9 +21,20 @@ public class FileHandler {
         return null;
     }
 
+    public static BinarySearchTree createBST(int type) {
+        ArrayList<String> recipeFile = recipeFileRead();
+        for (String line : recipeFile) {
+            ArrayList<String> linePieces;
+            linePieces
+            BinarySearchTree bst = new BinarySearchTree();
+            bst.add();
+        }
+    }
+
     public static void recipeFileSearch(String term) {
 
         // then, binary search for the name
+
         // separate searches for different terms
     }
 

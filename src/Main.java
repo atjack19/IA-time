@@ -1,7 +1,3 @@
-import java.util.ArrayList;
-import java.util.Scanner;
-import java.util.Arrays;
-
 public class Main {
     public static void main(String[] args) {
         /*
@@ -56,14 +52,17 @@ public class Main {
 
         String[] data = {"house","car","wall","dog","apple","soup","School","Alphabetical","Zoo"};
 
-        BinarySearchTree bst = new BinarySearchTree();
+        BinarySearchTree bstString = new BinarySearchTree();
+
+
+
         for (String datum : data) {
             //System.out.println("adding " + data[i]);
-            bst.add(datum);
+            bstString.add(datum);
         }
 
-        bst.display();
-        bst.reverseDisplay();
+        bstString.display();
+        bstString.reverseDisplay();
 
         int[] data2 = {17,37,19,1,4,15};
 
