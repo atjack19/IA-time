@@ -50,30 +50,34 @@ public class Main {
 //
 //        System.out.println(FileHandler.recipeFileRead());
 
-        String[] data = {"house","car","wall","dog","apple","soup","School","Alphabetical","Zoo"};
+        //String[] data = {"house","car","wall","dog","apple","soup","School","Alphabetical","Zoo"};
 
-        BinarySearchTree bstString = new BinarySearchTree();
+        //BinarySearchTree bstString = new BinarySearchTree();
 
 
 
-        for (String datum : data) {
+        //for (String datum : data) {
             //System.out.println("adding " + data[i]);
-            bstString.add(datum);
-        }
+            //bstString.add(datum);
+        //}
 
-        bstString.display();
-        bstString.reverseDisplay();
+        //bstString.display();
+        //bstString.reverseDisplay();
 
-        int[] data2 = {17,37,19,1,4,15};
+        //int[] data2 = {17,37,19,1,4,15};
 
-        BinarySearchTree bst2 = new BinarySearchTree();
-        for (int datum : data2) {
-            bst2.add(datum);
-        }
+        //BinarySearchTree bst2 = new BinarySearchTree();
+        //for (int datum : data2) {
+            //bst2.add(datum);
+        //}
 
-        bst2.display();
-        bst2.reverseDisplay();
+        //bst2.display();
+        //bst2.reverseDisplay();
 
         //GUI myGUI = new GUI();
+
+        BinarySearchTree nameBST = FileHandler.createBST(0);
+        nameBST.display();
+        nameBST.searchFor("name", "A");
     }
 }

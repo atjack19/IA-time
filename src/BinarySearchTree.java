@@ -142,4 +142,31 @@ public class BinarySearchTree {
         }
         System.out.println();
     }
+
+    public void searchFor(String searchCriteria, String searchItem) {
+        //currentSearch.clear();
+        searchItem = searchItem.toLowerCase();
+        switch (searchCriteria.toLowerCase()) {
+            case "name":
+                searchFor("name", searchItem, stringRoot);
+                break;
+        }
+    }
+
+    private void searchFor(String searchCriteria, String searchItem, BinaryTreeNodeString startingNode) {
+        if (startingNode == null) {
+            return;
+        }
+
+        String lookup = startingNode.getValue().substring(0, Math.min(startingNode.getValue().length(), searchItem.length())).toLowerCase();
+        if (searchItem.equals(lookup)) {
+            System.out.println(startingNode.getValue());
+        }
+        if (searchItem.compareToIgnoreCase(lookup) <= 0) {
+            searchFor(searchCriteria, searchItem, startingNode.getLeft());
+        }
+        if (searchItem.compareToIgnoreCase(lookup) >= 0) {
+            searchFor(searchCriteria, searchItem, startingNode.getRight());
+        }
+    }
 }

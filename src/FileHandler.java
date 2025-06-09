@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class FileHandler {
     public static ArrayList<String> recipeFileRead() {
@@ -14,8 +15,7 @@ public class FileHandler {
             }
             return recipes;
         }
-        catch (IOException e)
-        {
+        catch (IOException e) {
             e.printStackTrace();
         }
         return null;
@@ -23,17 +23,16 @@ public class FileHandler {
 
     public static BinarySearchTree createBST(int type) {
         ArrayList<String> recipeFile = recipeFileRead();
+        BinarySearchTree bst = new BinarySearchTree();
+        assert recipeFile != null;
         for (String line : recipeFile) {
-            ArrayList<String> linePieces;
-            linePieces
-            BinarySearchTree bst = new BinarySearchTree();
-            bst.add();
+            bst.add(line.split(",")[type]);
         }
+        return bst;
     }
 
     public static void recipeFileSearch(String term) {
-
-        // then, binary search for the name
+        // binary search for the name
 
         // separate searches for different terms
     }
