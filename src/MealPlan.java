@@ -1,17 +1,21 @@
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class MealPlan {
-    private HashMap<String, Recipe> weeklyMealPlan = new HashMap<>();
+    private HashMap<String, Recipe> weeklyMealPlan;
 
-    public void addMeal(String day, Recipe recipe) {
-        weeklyMealPlan.put(day, recipe);
+    public MealPlan(HashMap<String, Recipe> weeklyMealPlan) {
+        this.weeklyMealPlan = weeklyMealPlan;
     }
 
-    public Recipe getMealForDay(String day) {
-        return weeklyMealPlan.getOrDefault(day, null);
+    public List<Recipe> getAllMeals() {
+        return new ArrayList<>(weeklyMealPlan.values());
     }
-
-//    public ShoppingList generateShoppingList(HashMap weeklyMealPlan) {
-//        //generate shopping list
-//    }
+    
+    public ShoppingList generateShoppingList(Inventory inventory) {
+        ShoppingList list = new ShoppingList();
+        list.generateList(this, inventory);
+        return list;
+    }
 }

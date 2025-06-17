@@ -1,6 +1,9 @@
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+
+//Recipe Name,Book,Page,ingredient1:quantity1:unit1;ingredient2:quantity2:unit2,calories,...
 
 public class FileHandler {
     public static ArrayList<String> recipeFileRead() {
@@ -31,11 +34,6 @@ public class FileHandler {
         return bst;
     }
 
-    public static void recipeFileSearch(String term) {
-        // binary search for the name
-
-        // separate searches for different terms
-    }
 
     public static void writeToFile(String fileName, String text, boolean append) {
         // write text to fileName, overwriting (append = false) or appending (append = true)
@@ -69,9 +67,127 @@ public class FileHandler {
         }
     }
 
-    public static void addRecipe(Recipe recipe) {
-        addRecipe(recipe.getName(), recipe.getBook(), recipe.getPage(), recipe.getIngredients(), recipe.getCalories(), recipe.getProtein(), recipe.getCarbs(), recipe.getSugars(), recipe.getFats(), recipe.getTags());
+
+
+    public static RecipeList loadAllRecipes() {
+        RecipeList recipes = new RecipeList();
+        try (BufferedReader br = new BufferedReader(new FileReader("recipes.txt"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                Recipe recipe = parseRecipeLine(line);
+                if (recipe != null) {
+                    recipes.add(recipe);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return recipes;
     }
 
+    private static Recipe parseRecipeLine(String line) {
+        try {
+            String[] parts = line.split(",");
+            if (parts.length < 10) return null;
 
+            // Parse basic information
+            String name = parts[0];
+            String book = parts[1];
+            int page = Integer.parseInt(parts[2]);
+
+            // Parse ingredients
+            String[] ingredientStrings = parts[3].split(";");
+            List<Ingredient> ingredientList = new ArrayList<>();
+
+            for (String ing : ingredientStrings) {
+                if (!ing.isEmpty()) {
+                    String[] ingParts = ing.split(":");
+                    if (ingParts.length >= 3) {
+                        Ingredient ingredient = new Ingredient(
+                                ingParts[0],                    // name
+                                Double.parseDouble(ingParts[1]), // quantity
+                                ingParts[2]                     // unit
+                        );
+                        ingredientList.add(ingredient);
+                    }
+                }
+            }
+            Ingredient[] ingredients = ingredientList.toArray(new Ingredient[0]);
+
+            // Parse nutritional information
+            int calories = Integer.parseInt(parts[4]);
+            int protein = Integer.parseInt(parts[5]);
+            int carbs = Integer.parseInt(parts[6]);
+            int sugars = Integer.parseInt(parts[7]);
+            int fats = Integer.parseInt(parts[8]);
+
+            // Parse tags
+            String[] tags = parts[9].split(";");
+
+            return new Recipe(name, book, page, ingredients, 
+                            calories, protein, carbs, sugars, fats, tags);
+        } catch (Exception e) {
+            System.err.println("Error parsing recipe line: " + line);
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    // Method to save all recipes (overwrites the file)
+    public static void saveAllRecipes(List<Recipe> recipes) {
+        try (PrintWriter pw = new PrintWriter(new FileWriter("recipes.txt", false))) {
+            for (Recipe recipe : recipes) {
+                String line = formatRecipeToLine(recipe);
+                pw.println(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static String formatRecipeToLine(Recipe recipe) {
+        StringBuilder sb = new StringBuilder();
+        
+        // Add basic information
+        sb.append(recipe.getName()).append(",")
+          .append(recipe.getBook()).append(",")
+          .append(recipe.getPage()).append(",");
+
+        // Add ingredients
+        for (Ingredient ing : recipe.getIngredients()) {
+            sb.append(ing.getName()).append(";");
+        }
+        sb.append(",");
+
+        // Add nutritional information
+        sb.append(recipe.getCalories()).append(",")
+          .append(recipe.getProtein()).append(",")
+          .append(recipe.getCarbs()).append(",")
+          .append(recipe.getSugars()).append(",")
+          .append(recipe.getFats()).append(",");
+
+        // Add tags
+        for (String tag : recipe.getTags()) {
+            sb.append(tag).append(";");
+        }
+
+        return sb.toString();
+    }
+    public static boolean removeRecipe(String recipeName) {
+        RecipeList recipes = loadAllRecipes();
+        
+        // Find and remove the recipe with the matching name
+        boolean removed = recipes.removeIf(recipe -> 
+            recipe.getName().equalsIgnoreCase(recipeName));
+        
+        if (removed) {
+            // If recipe was found and removed, save the updated list
+            saveAllRecipes(recipes);
+            System.out.println("Recipe '" + recipeName + "' removed successfully!");
+            return true;
+        } else {
+            System.out.println("Recipe '" + recipeName + "' not found!");
+            return false;
+        }
+    }
 }
