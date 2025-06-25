@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        //GUI myGUI = new GUI();
+        GUI myGUI = new GUI();
 
         //BinarySearchTree nameBST = FileHandler.createBST(0);
         //nameBST.display();

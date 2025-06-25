@@ -24,7 +24,7 @@ public class FileHandler {
         return null;
     }
 
-    public static BinarySearchTree createBST(int type) {
+    public static BinarySearchTree createBST(int type) { // fix this to iterate over loadallrecipes?? recipefileread only reads names
         ArrayList<String> recipeFile = recipeFileRead();
         BinarySearchTree bst = new BinarySearchTree();
         assert recipeFile != null;
@@ -48,24 +48,24 @@ public class FileHandler {
         }
     }
 
-    public static void addRecipe(String name, String book, int page, Ingredient[] ingredients, int calories, int protein, int carbs, int sugars, int fats, String[] tags) {
-        String line = name + "," + book + "," + page + ",";
-        for (Ingredient ingredient : ingredients) {
-            line += ingredient.getName() + ";";
-        }
-        line = line + "," + calories + "," + protein + "," + carbs + "," + sugars + "," + fats + ",";
-        for (String tag : tags) {
-            line += tag + ";";
-        }
-
-        try {
-            if (FileHandler.recipeFileRead() != null && !FileHandler.recipeFileRead().contains(name)) {
-                FileHandler.writeToFile("recipes.txt", line, true); // add an arraylist of recipe names to ensure no duplicates
-            }
-        } catch (NullPointerException e) {
-            FileHandler.writeToFile("recipes.txt", line, true);
-        }
-    }
+//    public static void addRecipe(String name, String book, int page, Ingredient[] ingredients, int calories, int protein, int carbs, int sugars, int fats, String[] tags) {
+//        String line = name + "," + book + "," + page + ",";
+//        for (Ingredient ingredient : ingredients) {
+//            line += ingredient.getName() + ";";
+//        }
+//        line = line + "," + calories + "," + protein + "," + carbs + "," + sugars + "," + fats + ",";
+//        for (String tag : tags) {
+//            line += tag + ";";
+//        }
+//
+//        try {
+//            if (FileHandler.recipeFileRead() != null && !FileHandler.recipeFileRead().contains(name)) {
+//                FileHandler.writeToFile("recipes.txt", line, true); // add an arraylist of recipe names to ensure no duplicates
+//            }
+//        } catch (NullPointerException e) {
+//            FileHandler.writeToFile("recipes.txt", line, true);
+//        }
+//    }
 
 
 
@@ -87,6 +87,7 @@ public class FileHandler {
 
     private static Recipe parseRecipeLine(String line) {
         try {
+            // 0- name | 1- book | 2- page | 3- ingredients | 4--8 nutrition | 9- tags
             String[] parts = line.split(",");
             if (parts.length < 10) return null;
 

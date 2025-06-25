@@ -1,12 +1,8 @@
-import java.util.HashMap;
-import java.util.Map;
-
 public class Recipe {
     private String name;
     private String book;
     private int page;
-    //private Ingredient[] ingredients;
-    Map<Ingredient, Double> ingredientQuantities = new HashMap<>();
+    private Ingredient[] ingredients;
     private int calories;
     private int protein;
     private int carbs;
@@ -18,18 +14,13 @@ public class Recipe {
         this.name = name;
         this.book = book;
         this.page = page;
-        //this.ingredients = ingredients;
+        this.ingredients = ingredients;
         this.calories = calories;
         this.protein = protein;
         this.carbs = carbs;
         this.sugars = sugars;
         this.fats = fats;
         this.tags = tags;
-
-        // Initialize ingredients with default quantities
-        for (Ingredient ingredient : ingredients) {
-            this.addIngredient(ingredient, ingredient.getQuantity());
-        }
     }
 
     public String getName() {
@@ -42,10 +33,6 @@ public class Recipe {
 
     public int getPage() {
         return page;
-    }
-
-    public Ingredient[] getIngredients() {
-        return ingredientQuantities.keySet().toArray(new Ingredient[0]);
     }
 
     public int getCalories() {
@@ -71,26 +58,4 @@ public class Recipe {
     public String[] getTags() {
         return tags;
     }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        Recipe other = (Recipe) obj;
-        return name.equalsIgnoreCase(other.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return name.toLowerCase().hashCode();
-    }
-
-    public void addIngredient(Ingredient ingredient, double quantity) {
-        ingredientQuantities.put(ingredient, quantity);
-    }
-    
-    public double getRequiredQuantity(Ingredient ingredient) {
-        return ingredientQuantities.getOrDefault(ingredient, 0.0);
-    }
-
 }

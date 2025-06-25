@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="0dff23fb-a8c1-48c8-8718-928e25bc1479" name="Changes" comment="search works now">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,17 +29,17 @@
     &quot;assignee&quot;: &quot;atjack19&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/atjack19/IA-time.git&quot;,
-    &quot;accountId&quot;: &quot;4ae5e913-834b-4baa-a3e5-c0a00ede336c&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/atjack19/IA-time.git",
+    "accountId": "ab856e85-e9d9-4e50-a395-c967a106db94"
   }
-}</component>
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
 }</component>
   <component name="ProjectId" id="2uqxCiQgmfnxvEx6fLyFoKUnDsx" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+  <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
   <component name="ProjectViewState">

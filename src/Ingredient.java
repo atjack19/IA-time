@@ -1,7 +1,7 @@
 public class Ingredient {
     private String name;
     private double quantity;
-    private String unit; // e.g., "g", "ml", "pieces"
+    private String unit;
 
     public Ingredient(String name, double quantity, String unit) {
         this.name = name;
