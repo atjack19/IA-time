@@ -4,9 +4,8 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        GUI myGUI = new GUI();
+        //GUI myGUI = new GUI();
 
-        //BinarySearchTree nameBST = FileHandler.createBST(0);
         //nameBST.display();
         //nameBST.searchFor("name", "A");
 
@@ -91,20 +90,20 @@ public class Main {
         MealPlan mealPlan = new MealPlan(weeklyPlan);
 
         // 6. Generate shopping list
-        ShoppingList shoppingList = mealPlan.generateShoppingList(inventory);
+//        ShoppingList shoppingList = mealPlan.generateShoppingList(inventory);
 
         // 7. Display various information
         System.out.println("\n=== All Recipes ===");
         recipes.displayFormatted();
 
-        System.out.println("\n=== Recipe Recommendations ===");
-        System.out.println("Recipes we can make with current inventory:");
-        List<Recipe> possibleRecipes = recommender.recommendByInventory(inventory, recipes);
-        possibleRecipes.forEach(recipe -> System.out.println("- " + recipe.getName()));
-
-        System.out.println("\nSummer recipes:");
-        List<Recipe> summerRecipes = recommender.recommendBySeason("summer", recipes);
-        summerRecipes.forEach(recipe -> System.out.println("- " + recipe.getName()));
+//        System.out.println("\n=== Recipe Recommendations ===");
+//        System.out.println("Recipes we can make with current inventory:");
+//        List<Recipe> possibleRecipes = recommender.recommendByInventory(inventory, recipes);
+//        possibleRecipes.forEach(recipe -> System.out.println("- " + recipe.getName()));
+//
+//        System.out.println("\nSummer recipes:");
+//        List<Recipe> summerRecipes = recommender.recommendBySeason("summer", recipes);
+//        summerRecipes.forEach(recipe -> System.out.println("- " + recipe.getName()));
 
 
     }

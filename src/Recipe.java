@@ -58,4 +58,8 @@ public class Recipe {
     public String[] getTags() {
         return tags;
     }
+
+    public Ingredient[] getIngredients() {
+        return ingredients;
+    }
 }

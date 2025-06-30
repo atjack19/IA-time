@@ -156,7 +156,7 @@ public class FileHandler {
 
         // Add ingredients
         for (Ingredient ing : recipe.getIngredients()) {
-            sb.append(ing.getName()).append(";");
+            sb.append(ing.getName()).append(":").append(ing.getQuantity()).append(":").append(ing.getUnit()).append(";");
         }
         sb.append(",");
 

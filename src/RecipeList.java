@@ -1,9 +1,13 @@
 import java.util.ArrayList;
 
 public class RecipeList extends ArrayList<Recipe> {
+
+    public BinarySearchTree nameBST = FileHandler.createBST(0);
+
     @Override
     public boolean add(Recipe recipe) {
         // Check for duplicates before adding
+        if (nameBST.searchFor("name", recipe.getName()) != null)
         if (this.stream().anyMatch(existing -> existing.equals(recipe))) {
             System.out.println("Recipe '" + recipe.getName() + "' already exists in the recipe book!");
             return false;
@@ -22,7 +26,7 @@ public class RecipeList extends ArrayList<Recipe> {
             System.out.println("Recipe: " + recipe.getName());
             System.out.println("Ingredients:");
             for (Ingredient ing : recipe.getIngredients()) {
-                System.out.println("- " + ing.getName());
+                System.out.println("- " + ing.getName()+" ("+ing.getQuantity()+ing.getUnit()+")" );
             }
             System.out.println();
         }

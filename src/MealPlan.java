@@ -13,9 +13,9 @@ public class MealPlan {
         return new ArrayList<>(weeklyMealPlan.values());
     }
     
-    public ShoppingList generateShoppingList(Inventory inventory) {
-        ShoppingList list = new ShoppingList();
-        list.generateList(this, inventory);
-        return list;
-    }
+//    public ShoppingList generateShoppingList(Inventory inventory) {
+//        ShoppingList list = new ShoppingList();
+//        list.generateList(this, inventory);
+//        return list;
+//    }
 }
