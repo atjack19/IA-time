@@ -20,4 +20,8 @@ public class Inventory {
     public double getQuantity(Ingredient ingredient) {
         return ingredients.getOrDefault(ingredient, 0.0);
     }
+
+    public Map<Ingredient, Double> getAllIngredients() {
+        return new HashMap<>(ingredients);
+    }
 }

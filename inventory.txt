@@ -1,0 +1,7 @@
+eggs:12.0:large
+milk:1000.0:ml
+flour:1000.0:g
+butter:250.0:g
+test_ingredient:200.0:g
+sugar:500.0:g
+cheese:300.0:g

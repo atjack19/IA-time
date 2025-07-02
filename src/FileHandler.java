@@ -2,6 +2,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 //Recipe Name,Book,Page,ingredient1:quantity1:unit1;ingredient2:quantity2:unit2,calories,...
 
@@ -24,16 +25,40 @@ public class FileHandler {
         return null;
     }
 
-    public static BinarySearchTree createBST(int type) { // fix this to iterate over loadallrecipes?? recipefileread only reads names
-        ArrayList<String> recipeFile = recipeFileRead();
+    public static BinarySearchTree createBST(int type) {
+        RecipeList recipes = loadAllRecipes();
         BinarySearchTree bst = new BinarySearchTree();
-        assert recipeFile != null;
-        for (String line : recipeFile) {
-            bst.add(line.split(",")[type]);
+        
+        for (Recipe recipe : recipes) {
+            switch (type) {
+                case 0: // name
+                    bst.add(recipe.getName());
+                    break;
+                case 1: // book
+                    bst.add(recipe.getBook());
+                    break;
+                case 2: // page (convert to string for BST)
+                    bst.add(String.valueOf(recipe.getPage()));
+                    break;
+                case 3: // calories (convert to string for BST)
+                    bst.add(String.valueOf(recipe.getCalories()));
+                    break;
+                default:
+                    bst.add(recipe.getName()); // default to name
+            }
         }
         return bst;
     }
 
+    // Create BST for recipe names (most common use case)
+    public static BinarySearchTree createNameBST() {
+        return createBST(0);
+    }
+
+    // Create BST for recipe calories
+    public static BinarySearchTree createCaloriesBST() {
+        return createBST(3);
+    }
 
     public static void writeToFile(String fileName, String text, boolean append) {
         // write text to fileName, overwriting (append = false) or appending (append = true)
@@ -189,6 +214,110 @@ public class FileHandler {
         } else {
             System.out.println("Recipe '" + recipeName + "' not found!");
             return false;
+        }
+    }
+
+    // Inventory file handling methods
+    public static void saveInventory(Inventory inventory) {
+        try (PrintWriter pw = new PrintWriter(new FileWriter("inventory.txt", false))) {
+            // Format: ingredientName:quantity:unit
+            for (Map.Entry<Ingredient, Double> entry : inventory.getAllIngredients().entrySet()) {
+                Ingredient ingredient = entry.getKey();
+                double quantity = entry.getValue();
+                String line = ingredient.getName() + ":" + quantity + ":" + ingredient.getUnit();
+                pw.println(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static Inventory loadInventory() {
+        Inventory inventory = new Inventory();
+        try (BufferedReader br = new BufferedReader(new FileReader("inventory.txt"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(":");
+                if (parts.length >= 3) {
+                    Ingredient ingredient = new Ingredient(
+                        parts[0],                    // name
+                        Double.parseDouble(parts[1]), // quantity
+                        parts[2]                     // unit
+                    );
+                    inventory.addIngredient(ingredient, ingredient.getQuantity());
+                }
+            }
+        } catch (IOException e) {
+            // File doesn't exist yet, return empty inventory
+            System.out.println("No inventory file found. Starting with empty inventory.");
+        }
+        return inventory;
+    }
+
+    // LeftoverMeal file handling methods
+    public static void saveLeftoverMeals(List<LeftoverMeal> leftoverMeals) {
+        try (PrintWriter pw = new PrintWriter(new FileWriter("leftover_meals.txt", false))) {
+            for (LeftoverMeal meal : leftoverMeals) {
+                String line = formatLeftoverMealToLine(meal);
+                pw.println(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static List<LeftoverMeal> loadLeftoverMeals() {
+        List<LeftoverMeal> leftoverMeals = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader("leftover_meals.txt"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                LeftoverMeal meal = parseLeftoverMealLine(line);
+                if (meal != null) {
+                    leftoverMeals.add(meal);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("No leftover meals file found.");
+        }
+        return leftoverMeals;
+    }
+
+    private static String formatLeftoverMealToLine(LeftoverMeal meal) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(meal.getName()).append(",")
+          .append(meal.getPortions()).append(",")
+          .append(meal.getCalories()).append(",")
+          .append(meal.getProtein()).append(",")
+          .append(meal.getCarbs()).append(",")
+          .append(meal.getSugars()).append(",")
+          .append(meal.getFats()).append(",");
+        
+        for (String tag : meal.getTags()) {
+            sb.append(tag).append(";");
+        }
+        
+        return sb.toString();
+    }
+
+    private static LeftoverMeal parseLeftoverMealLine(String line) {
+        try {
+            String[] parts = line.split(",");
+            if (parts.length < 8) return null;
+
+            String name = parts[0];
+            int portions = Integer.parseInt(parts[1]);
+            int calories = Integer.parseInt(parts[2]);
+            int protein = Integer.parseInt(parts[3]);
+            int carbs = Integer.parseInt(parts[4]);
+            int sugars = Integer.parseInt(parts[5]);
+            int fats = Integer.parseInt(parts[6]);
+            String[] tags = parts[7].split(";");
+
+            return new LeftoverMeal(name, portions, calories, protein, carbs, sugars, fats, tags);
+        } catch (Exception e) {
+            System.err.println("Error parsing leftover meal line: " + line);
+            e.printStackTrace();
+            return null;
         }
     }
 }

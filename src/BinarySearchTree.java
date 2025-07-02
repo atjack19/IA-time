@@ -1,10 +1,15 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class BinarySearchTree {
     private BinaryTreeNode root;
     private BinaryTreeNodeString stringRoot;
+    private List<String> searchResults;
 
     public BinarySearchTree() {
         root = null;
         stringRoot = null;
+        searchResults = new ArrayList<>();
     }
     //insert a new node preserving the BST property
     public void add(int v) {
@@ -143,14 +148,15 @@ public class BinarySearchTree {
         System.out.println();
     }
 
-    public void searchFor(String searchCriteria, String searchItem) {
-        //currentSearch.clear();
+    public List<String> searchFor(String searchCriteria, String searchItem) {
+        searchResults.clear();
         searchItem = searchItem.toLowerCase();
         switch (searchCriteria.toLowerCase()) {
             case "name":
                 searchFor("name", searchItem, stringRoot);
                 break;
         }
+        return new ArrayList<>(searchResults);
     }
 
     private void searchFor(String searchCriteria, String searchItem, BinaryTreeNodeString startingNode) {
@@ -158,15 +164,31 @@ public class BinarySearchTree {
             return;
         }
 
-        String lookup = startingNode.getValue().substring(0, Math.min(startingNode.getValue().length(), searchItem.length())).toLowerCase();
-        if (searchItem.equals(lookup)) {
-            System.out.println(startingNode.getValue());
+        String nodeValue = startingNode.getValue().toLowerCase();
+        
+        // Fuzzy search: check if the search term is contained in the node value
+        if (nodeValue.contains(searchItem)) {
+            searchResults.add(startingNode.getValue());
         }
-        if (searchItem.compareToIgnoreCase(lookup) <= 0) {
-            searchFor(searchCriteria, searchItem, startingNode.getLeft());
+        
+        // Continue searching both left and right subtrees for more matches
+        searchFor(searchCriteria, searchItem, startingNode.getLeft());
+        searchFor(searchCriteria, searchItem, startingNode.getRight());
+    }
+
+    // Method to get all values in sorted order
+    public List<String> getAllValues() {
+        List<String> values = new ArrayList<>();
+        collectValues(stringRoot, values);
+        return values;
+    }
+
+    private void collectValues(BinaryTreeNodeString node, List<String> values) {
+        if (node == null) {
+            return;
         }
-        if (searchItem.compareToIgnoreCase(lookup) >= 0) {
-            searchFor(searchCriteria, searchItem, startingNode.getRight());
-        }
+        collectValues(node.getLeft(), values);
+        values.add(node.getValue());
+        collectValues(node.getRight(), values);
     }
 }

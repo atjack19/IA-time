@@ -6,3 +6,4 @@ Vegetable Soup,Hearty Soups,56,cheese:150.0:g;milk:200.0:ml;,190,6,25,4,5,vegeta
 Salmon Salad,Fresh and Fit,201,cheese:150.0:g;milk:200.0:ml;,360,28,10,3,25,fish;healthy;lunch;omega-3;
 Vanilla Cake,Baking Basics,42,flour:200.0:g;sugar:150.0:g;eggs:3.0:large;butter:100.0:g;,300,5,45,30,10,dessert;baking;sweet;summer;
 Sugar Cookies,Cookie Book,15,flour:150.0:g;sugar:100.0:g;butter:80.0:g;,200,2,30,25,8,dessert;baking;sweet;winter;
+Test Recipe,Test Book,100,test:50.0:g;,250,10,30,5,15,test;quick;
