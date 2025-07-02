@@ -29,6 +29,7 @@ public class GUI extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         containerWidth = getContentPane().getWidth();
         containerHeight = getContentPane().getHeight();
+        int xOffset = 308;
         setVisible(false);
 
         lblMessage = new JLabel("New Label");
@@ -39,80 +40,46 @@ public class GUI extends JFrame {
         recipeButton.setBounds(75,50,standardWidth,standardHeight);
 
         stockButton = new JButton("Stock");
-        System.out.println(containerWidth);
-        System.out.println(containerWidth-standardWidth-50);
-        stockButton.setBounds(containerWidth-standardWidth-75,50,standardWidth,standardHeight);
+        stockButton.setBounds(1366-standardWidth-75,50,standardWidth,standardHeight);
 
         monButton = new JButton("Monday");
-        monButton.setBounds(75,75,150,30);
+        monButton.setBounds(xOffset,150,150,150);
 
         tueButton = new JButton("Tuesday");
-        //tueButton.setBounds(75,75,150,30);
+        tueButton.setBounds(xOffset+200,150,150,150);
 
         wedButton = new JButton("Wednesday");
-        //wedButton.setBounds(75,75,150,30);
+        wedButton.setBounds(xOffset+400,150,150,150);
 
         thuButton = new JButton("Thursday");
-        //thuButton.setBounds(75,75,150,30);
+        thuButton.setBounds(xOffset+600,150,150,150);
 
         friButton = new JButton("Friday");
-        //friButton.setBounds(75,75,150,30);
+        friButton.setBounds(xOffset+100,350,150,150);
 
         satButton = new JButton("Saturday");
-        //satButton.setBounds(75,75,150,30);
+        satButton.setBounds(xOffset+300,350,150,150);
 
         sunButton = new JButton("Sunday");
-        //sunButton.setBounds(75,75,150,30);
+        sunButton.setBounds(xOffset+500,350,150,150);
 
         listButton = new JButton("List");
-        listButton.setBounds(75,containerHeight-standardHeight-75,150,30);
+        listButton.setBounds(75,1366-standardHeight-75,150,30);
 
         clearButton = new JButton("Clear");
-        clearButton.setBounds(containerWidth-standardWidth-75,containerHeight-standardHeight-75,150,30);
-
-        // Creating a panel to add buttons
-        // and a specific layout
-        JPanel p = new JPanel();
-
-        // Adding buttons and textfield to panel
-        // using add() method
-        p.add(monButton);
-        //p.add(tueButton, BorderLayout.SOUTH);
-        //p.add(wedButton, BorderLayout.EAST);
-        //p.add(thuButton, BorderLayout.WEST);
-        //p.add(friButton, BorderLayout.CENTER);
-
-        // setbackground of panel
-        p.setBackground(Color.red);
-        p.setSize(500, 500);
-        p.setLocation(150, 150);
-
-        // Adding panel to frame
-
-        //setLocationByPlatform(true);
-        //pack();
-
-        //add(p);
-
-        // Setting the size of frame
-        //f.setSize(300, 300);
-
-
+        clearButton.setBounds(1366-standardWidth-75,768-standardHeight-75,150,30);
 
         add(recipeButton);
         add(stockButton);
-        //add(monButton);
-        //add(tueButton);
-        //add(wedButton);
-        //add(thuButton);
-        //add(friButton);
-        //add(satButton);
-        //add(sunButton);
+        add(monButton);
+        add(tueButton);
+        add(wedButton);
+        add(thuButton);
+        add(friButton);
+        add(satButton);
+        add(sunButton);
         add(listButton);
         add(clearButton);
-
-        //setContentPane(p);
-        add(p);
 
         setVisible(true);
     }
