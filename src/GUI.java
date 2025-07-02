@@ -20,7 +20,7 @@ public class GUI extends JFrame {
     int containerHeight;
 
     public GUI() {
-        setTitle("New Window");
+        setTitle("Main Menu");
         //setSize(1920,1008);
         setSize(1366,768);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -31,11 +31,7 @@ public class GUI extends JFrame {
         containerHeight = getContentPane().getHeight();
         int xOffset = 308;
         setVisible(false);
-
-        lblMessage = new JLabel("New Label");
-        lblMessage.setBounds(50, 50, standardWidth, 150);
-        lblMessage.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-
+        //uytrewsfghjkm nbv
         recipeButton = new JButton("Recipes");
         recipeButton.setBounds(75,50,standardWidth,standardHeight);
 
@@ -57,14 +53,17 @@ public class GUI extends JFrame {
         friButton = new JButton("Friday");
         friButton.setBounds(xOffset+100,350,150,150);
 
-        satButton = new JButton("Saturday");
+        //satButton = new JButton("Saturday");
+        Recipe satRecipe =
+        satButton = new JButton("<html><center>Saturday<br>MEAL</center></html>");
         satButton.setBounds(xOffset+300,350,150,150);
+
 
         sunButton = new JButton("Sunday");
         sunButton.setBounds(xOffset+500,350,150,150);
 
         listButton = new JButton("List");
-        listButton.setBounds(75,1366-standardHeight-75,150,30);
+        listButton.setBounds(75,768-standardHeight-75,150,30);
 
         clearButton = new JButton("Clear");
         clearButton.setBounds(1366-standardWidth-75,768-standardHeight-75,150,30);

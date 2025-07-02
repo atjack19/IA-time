@@ -3,7 +3,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class MealPlan {
-    private HashMap<String, Recipe> weeklyMealPlan;
+    private HashMap<String, Recipe> weeklyMealPlan = new HashMap<>();
 
     public MealPlan(HashMap<String, Recipe> weeklyMealPlan) {
         this.weeklyMealPlan = weeklyMealPlan;
@@ -41,13 +41,11 @@ public class MealPlan {
         return weeklyMealPlan.get(day);
     }
 
-    // Clear a specific day
     public void clearDay(String day) {
         weeklyMealPlan.remove(day);
         System.out.println("Cleared meal for " + day);
     }
 
-    // Clear all meals
     public void clearAllMeals() {
         weeklyMealPlan.clear();
         System.out.println("Cleared all meals from the weekly plan");
