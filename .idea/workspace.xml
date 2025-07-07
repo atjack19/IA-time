@@ -5,24 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0dff23fb-a8c1-48c8-8718-928e25bc1479" name="Changes" comment="Worked on GUI Main Page 45mns">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/BinarySearchTree.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/BinaryTreeNode.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/BinaryTreeNodeString.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/FileHandler.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/FunctionalityTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GUI.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Ingredient.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Inventory.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/LeftoverMeal.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MealPlan.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MealPlan.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MealPlan.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Recipe.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/RecipeList.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/RecipeRecommender.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ShoppingList.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,12 +29,12 @@
     &quot;assignee&quot;: &quot;atjack19&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/atjack19/IA-time.git&quot;,
-    &quot;accountId&quot;: &quot;ab856e85-e9d9-4e50-a395-c967a106db94&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/atjack19/IA-time.git",
+    "accountId": "88fb452e-e39f-4949-af95-58dca0be726f"
   }
-}</component>
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
 }</component>

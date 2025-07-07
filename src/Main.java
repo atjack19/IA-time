@@ -5,7 +5,6 @@ import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
-        GUI myGUI = new GUI();
 
         //nameBST.display();
         //nameBST.searchFor("name", "A");
@@ -37,6 +36,8 @@ public class Main {
         Inventory inventory = FileHandler.loadInventory();
         List<LeftoverMeal> leftoverMeals = FileHandler.loadLeftoverMeals();
         RecipeRecommender recommender = new RecipeRecommender();
+        HashMap<String, Recipe> weeklyPlan = new HashMap<>();
+        GUI myGUI = new GUI(recipes, inventory, leftoverMeals, recommender, weeklyPlan,);
 
         // 2. Add some ingredients to inventory if empty
         if (inventory.getAllIngredients().isEmpty()) {
@@ -170,7 +171,7 @@ public class Main {
 
         // 11. Test meal plan management
         System.out.println("\n=== TESTING MEAL PLAN MANAGEMENT ===");
-        HashMap<String, Recipe> weeklyPlan = new HashMap<>();
+
         weeklyPlan.put("Monday", recipes.get(0));
         weeklyPlan.put("Wednesday", recipes.get(1));
         weeklyPlan.put("Friday", recipes.get(2));

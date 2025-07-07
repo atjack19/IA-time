@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 public class GUI extends JFrame {
     JLabel lblMessage;
@@ -19,7 +20,7 @@ public class GUI extends JFrame {
     int containerWidth;
     int containerHeight;
 
-    public GUI() {
+    public GUI(RecipeList recipes, Inventory inventory, List<LeftoverMeal> leftoverMeals, RecipeRecommender recommender) {
         setTitle("Main Menu");
         //setSize(1920,1008);
         setSize(1366,768);
