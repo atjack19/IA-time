@@ -62,4 +62,15 @@ public class Recipe {
     public Ingredient[] getIngredients() {
         return ingredients;
     }
+
+    public void setName(String name) { this.name = name; }
+    public void setBook(String book) { this.book = book; }
+    public void setPage(int page) { this.page = page; }
+    public void setIngredients(Ingredient[] ingredients) { this.ingredients = ingredients; }
+    public void setCalories(int calories) { this.calories = calories; }
+    public void setProtein(int protein) { this.protein = protein; }
+    public void setCarbs(int carbs) { this.carbs = carbs; }
+    public void setSugars(int sugars) { this.sugars = sugars; }
+    public void setFats(int fats) { this.fats = fats; }
+    public void setTags(String[] tags) { this.tags = tags; }
 }
