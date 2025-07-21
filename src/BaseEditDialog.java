@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public abstract class BaseEditDialog extends JDialog {
     protected JPanel fieldsPanel;
@@ -30,9 +32,21 @@ public abstract class BaseEditDialog extends JDialog {
         add(buttonPanel, BorderLayout.SOUTH);
 
         // Button actions
-        saveButton.addActionListener(e -> onSave());
-        cancelButton.addActionListener(e -> dispose());
-        deleteButton.addActionListener(e -> onDelete());
+        saveButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                onSave();
+            }
+        });
+        cancelButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+            }
+        });
+        deleteButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                onDelete();
+            }
+        });
         // Removed populateFields() call from here
     }
 

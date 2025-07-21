@@ -1,33 +1,32 @@
-// Abstract base class for list-based pages (e.g., recipes, stock, shopping list)
-// T is the type of item in the list (e.g., Recipe, Ingredient)
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
 public abstract class ListPage<T> extends JPanel {
-    protected DefaultTableModel tableModel; // Table model for the list
-    protected JTable table; // Table to display items
-    protected JTextField searchField; // Search bar
-    protected JPanel filtersPanel; // Panel for filters
-    protected JButton addButton, editButton, deleteButton; // Action buttons
-    protected List<T> allItems; // All items to display
+    protected DefaultTableModel tableModel;
+    protected JTable table;
+    protected JTextField searchField;
+    protected JPanel filtersPanel;
+    protected JButton addBtn, editBtn, deleteBtn;
+    protected List<T> allItems;
 
-    // Constructor sets up the layout and components
     public ListPage(List<T> items) {
         this.allItems = items;
         setLayout(new BorderLayout());
 
-        // Set up filters panel (left side)
         filtersPanel = new JPanel();
         filtersPanel.setLayout(new BoxLayout(filtersPanel, BoxLayout.Y_AXIS));
-        setupFilters(filtersPanel); // Subclass provides filters
+        setupFilters(filtersPanel);
         add(filtersPanel, BorderLayout.WEST);
 
-        // Set up top bar with search
         JPanel topPanel = new JPanel(new BorderLayout());
         searchField = new JTextField();
-        // Placeholder logic for search bar
         String placeholder = "Search...";
         Color placeholderColor = Color.GRAY;
         Color inputColor = Color.BLACK;
@@ -48,19 +47,96 @@ public abstract class ListPage<T> extends JPanel {
             }
         });
         topPanel.add(searchField, BorderLayout.CENTER);
-        JButton returnButton = new JButton("Return");
-        topPanel.add(returnButton, BorderLayout.EAST);
+        JButton returnBtn = new JButton("Return");
+        topPanel.add(returnBtn, BorderLayout.EAST);
         add(topPanel, BorderLayout.NORTH);
 
-        // Set up table
         tableModel = new DefaultTableModel(getColumnNames(), 0) {
             @Override
-            public boolean isCellEditable(int row, int column) { return false; }
+            public boolean isCellEditable(int row, int column) {
+                if (column == 0 && hasDayDropdownForRow(row)) return true;
+                return false;
+            }
         };
         table = new JTable(tableModel);
-        // Double-click to edit row
-        table.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent e) {
+        if (hasDayDropdown()) {
+            TableColumn dayColumn = table.getColumnModel().getColumn(0);
+            // Always-visible dropdown renderer
+            dayColumn.setCellRenderer(new TableCellRenderer() {
+                @Override
+                public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                    if (!hasDayDropdownForRow(row)) {
+                        JLabel label = new JLabel("");
+                        label.setOpaque(true);
+                        label.setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
+                        return label;
+                    }
+                    JComboBox<String> comboBox = new JComboBox<>();
+                    String[] days = getAvailableDaysForRow(row);
+                    String currentValue = value != null ? value.toString() : "";
+                    comboBox.addItem(""); // Blank/None option
+                    if (!currentValue.equals("") && !contains(days, currentValue)) {
+                        comboBox.addItem(currentValue);
+                    }
+                    for (String day : days) {
+                        if (!day.equals(currentValue)) {
+                            comboBox.addItem(day);
+                        }
+                    }
+                    comboBox.setSelectedItem(currentValue);
+                    if (comboBox.getSelectedIndex() == -1) {
+                        comboBox.setSelectedIndex(0);
+                    }
+                    // Debug output
+                    System.out.print("Renderer row=" + row + " currentValue='" + currentValue + "' items=[");
+                    for (int i = 0; i < comboBox.getItemCount(); i++) {
+                        System.out.print("'" + comboBox.getItemAt(i) + "'");
+                        if (i < comboBox.getItemCount() - 1) System.out.print(", ");
+                    }
+                    System.out.println("] selectedIndex=" + comboBox.getSelectedIndex());
+                    comboBox.setEnabled(false); // Not editable in renderer
+                    return comboBox;
+                }
+            });
+            // Editor with blank/None option
+            dayColumn.setCellEditor(new DefaultCellEditor(new JComboBox<String>()) {
+                @Override
+                public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+                    if (!hasDayDropdownForRow(row)) {
+                        return new JLabel("");
+                    }
+                    JComboBox<String> comboBox = new JComboBox<>();
+                    comboBox.addItem(""); // Blank/None option
+                    String[] days = getAvailableDaysForRow(row);
+                    String currentValue = value != null ? value.toString() : "";
+                    if (!currentValue.equals("") && !contains(days, currentValue)) {
+                        comboBox.addItem(currentValue);
+                    }
+                    for (String day : days) {
+                        if (!day.equals(currentValue)) {
+                            comboBox.addItem(day);
+                        }
+                    }
+                    comboBox.setSelectedItem(currentValue);
+                    if (comboBox.getSelectedIndex() == -1) {
+                        comboBox.setSelectedIndex(0);
+                    }
+                    comboBox.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent e) {
+                            String selectedDay = (String) comboBox.getSelectedItem();
+                            if (selectedDay == null || selectedDay.equals("")) {
+                                onDaySelected(row, null); // Unassign
+                            } else {
+                                onDaySelected(row, selectedDay);
+                            }
+                        }
+                    });
+                    return comboBox;
+                }
+            });
+        }
+        table.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2 && table.getSelectedRow() != -1) {
                     openEditDialog(table.getSelectedRow());
                 }
@@ -68,27 +144,35 @@ public abstract class ListPage<T> extends JPanel {
         });
         add(new JScrollPane(table), BorderLayout.CENTER);
 
-        // Set up bottom bar with add/edit/delete
         JPanel bottomPanel = new JPanel(new BorderLayout());
-        addButton = new JButton("+");
-        editButton = new JButton("Edit");
-        deleteButton = new JButton("Delete");
-        bottomPanel.add(addButton, BorderLayout.EAST);
-        bottomPanel.add(editButton, BorderLayout.CENTER);
-        bottomPanel.add(deleteButton, BorderLayout.WEST);
+        addBtn = new JButton("+");
+        editBtn = new JButton("Edit");
+        deleteBtn = new JButton("Delete");
+        bottomPanel.add(addBtn, BorderLayout.EAST);
+        bottomPanel.add(editBtn, BorderLayout.CENTER);
+        bottomPanel.add(deleteBtn, BorderLayout.WEST);
         add(bottomPanel, BorderLayout.SOUTH);
-
-        // Subclasses should call updateTable(allItems) after their own fields are initialized
-
-        // Listeners for search, add, edit, delete can be added in subclass
     }
 
-    // Subclass must provide column names for the table
+    // By default, no day dropdown. Subclasses can override.
+    protected boolean hasDayDropdown() { return false; }
+    // By default, use hasDayDropdown for all rows. Subclasses can override for per-row logic.
+    protected boolean hasDayDropdownForRow(int row) { return hasDayDropdown(); }
+    // Subclasses must provide available days for a given row if dropdown is enabled.
+    protected String[] getAvailableDaysForRow(int row) { return new String[0]; }
+    // Subclasses can override to handle day selection.
+    protected void onDaySelected(int row, String day) {}
+
     protected abstract String[] getColumnNames();
-    // Subclass must set up filters in the filtersPanel
     protected abstract void setupFilters(JPanel filtersPanel);
-    // Subclass must update the table with the given items
     protected abstract void updateTable(List<T> items);
-    // Subclass must open the edit dialog for the selected row
     protected abstract void openEditDialog(int row);
+
+    // Helper to check if an array contains a string
+    private boolean contains(String[] arr, String val) {
+        for (String s : arr) {
+            if (s.equals(val)) return true;
+        }
+        return false;
+    }
 } 

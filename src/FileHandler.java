@@ -320,4 +320,43 @@ public class FileHandler {
             return null;
         }
     }
+
+    // Save the meal plan to meal_plan.txt (Day,RecipeName,Book,Page)
+    public static void saveMealPlan(MealPlan mealPlan) {
+        try (PrintWriter pw = new PrintWriter(new FileWriter("meal_plan.txt", false))) {
+            for (String day : mealPlan.getPlannedDays()) {
+                Recipe recipe = mealPlan.getMeal(day);
+                if (recipe != null) {
+                    pw.println(day + "," + recipe.getName() + "," + recipe.getBook() + "," + recipe.getPage());
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Load the meal plan from meal_plan.txt (Day,RecipeName,Book,Page)
+    public static void loadMealPlan(MealPlan mealPlan, RecipeList recipes) {
+        try (BufferedReader br = new BufferedReader(new FileReader("meal_plan.txt"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(",", 4);
+                if (parts.length == 4) {
+                    String day = parts[0];
+                    String recipeName = parts[1];
+                    String book = parts[2];
+                    int page = Integer.parseInt(parts[3]);
+                    // Find the recipe by name, book, and page
+                    for (Recipe r : recipes) {
+                        if (r.getName().equals(recipeName) && r.getBook().equals(book) && r.getPage() == page) {
+                            mealPlan.addMeal(day, r);
+                            break;
+                        }
+                    }
+                }
+            }
+        } catch (IOException e) {
+            // File may not exist yet, that's fine
+        }
+    }
 }

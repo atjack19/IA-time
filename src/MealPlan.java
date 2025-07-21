@@ -4,9 +4,14 @@ import java.util.List;
 
 public class MealPlan {
     private HashMap<String, Recipe> weeklyMealPlan = new HashMap<>();
+    private Runnable onChange;
 
     public MealPlan(HashMap<String, Recipe> weeklyMealPlan) {
         this.weeklyMealPlan = weeklyMealPlan;
+    }
+
+    public void setOnChange(Runnable onChange) {
+        this.onChange = onChange;
     }
 
     public List<Recipe> getAllMeals() {
@@ -35,6 +40,7 @@ public class MealPlan {
 
     public void addMeal(String day, Recipe recipe) {
         weeklyMealPlan.put(day, recipe);
+        if (onChange != null) onChange.run();
     }
 
     public Recipe getMeal(String day) {
@@ -44,11 +50,13 @@ public class MealPlan {
     public void clearDay(String day) {
         weeklyMealPlan.remove(day);
         System.out.println("Cleared meal for " + day);
+        if (onChange != null) onChange.run();
     }
 
     public void clearAllMeals() {
         weeklyMealPlan.clear();
         System.out.println("Cleared all meals from the weekly plan");
+        if (onChange != null) onChange.run();
     }
 
     // Check if a day has a meal planned

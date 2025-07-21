@@ -16,7 +16,6 @@ public class RecipeList extends ArrayList<Recipe> {
     private void updateBSTs() {
         nameBST = new BinarySearchTree();
         caloriesBST = new BinarySearchTree();
-        
         for (Recipe recipe : this) {
             nameBST.add(recipe.getName());
             caloriesBST.add(String.valueOf(recipe.getCalories()));
@@ -26,9 +25,14 @@ public class RecipeList extends ArrayList<Recipe> {
     @Override
     public boolean add(Recipe recipe) {
         // Check for duplicates before adding - same name AND same book = duplicate
-        if (this.stream().anyMatch(existing -> 
-            existing.getName().equals(recipe.getName()) && 
-            existing.getBook().equals(recipe.getBook()))) {
+        boolean duplicate = false;
+        for (Recipe existing : this) {
+            if (existing.getName().equals(recipe.getName()) && existing.getBook().equals(recipe.getBook())) {
+                duplicate = true;
+                break;
+            }
+        }
+        if (duplicate) {
             System.out.println("Recipe '" + recipe.getName() + "' from book '" + recipe.getBook() + "' already exists in the recipe book!");
             return false;
         }
@@ -178,5 +182,22 @@ public class RecipeList extends ArrayList<Recipe> {
     public void displayBSTInfo() {
         System.out.println("Name BST contains " + nameBST.getAllValues().size() + " entries");
         System.out.println("Calories BST contains " + caloriesBST.getAllValues().size() + " entries");
+    }
+
+    // Remove recipe by name (case-insensitive)
+    public boolean removeRecipeByName(String recipeName) {
+        boolean removed = false;
+        for (int i = 0; i < this.size(); i++) {
+            Recipe recipe = this.get(i);
+            if (recipe.getName().equalsIgnoreCase(recipeName)) {
+                this.remove(i);
+                removed = true;
+                break;
+            }
+        }
+        if (removed) {
+            updateBSTs();
+        }
+        return removed;
     }
 }

@@ -3,136 +3,162 @@ import java.awt.*;
 import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Map;
 
 public class GUI extends JFrame {
-    JLabel lblMessage;
-    JButton recipeButton;
-    JButton stockButton;
-    JButton monButton;
-    JButton tueButton;
-    JButton wedButton;
-    JButton thuButton;
-    JButton friButton;
-    JButton satButton;
-    JButton sunButton;
-    JButton listButton;
-    JButton clearButton;
-    int standardWidth = 150;
-    int standardHeight = 30;
-    int containerWidth;
-    int containerHeight;
+    JButton recipeBtn;
+    JButton stockBtn;
+    JButton monBtn;
+    JButton tueBtn;
+    JButton wedBtn;
+    JButton thuBtn;
+    JButton friBtn;
+    JButton satBtn;
+    JButton sunBtn;
+    JButton listBtn;
+    JButton clearBtn;
+    int btnWidth = 150;
+    int btnHeight = 30;
     private MealPlan mealPlan;
+    private Inventory inventory;
 
     public GUI(RecipeList recipes, Inventory inventory, List<LeftoverMeal> leftoverMeals, RecipeRecommender recommender, MealPlan mealPlan) {
         this.mealPlan = mealPlan;
+        this.inventory = inventory;
         setTitle("Main Page");
-        setSize(1366, 768);
+        setSize(1920, 1080);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setLayout(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        containerWidth = getContentPane().getWidth();
-        containerHeight = getContentPane().getHeight();
-        int xOffset = 308;
-        
-        // Top buttons
-        recipeButton = new JButton("Recipes");
-        recipeButton.setBounds(75, 50, standardWidth, standardHeight);
-        add(recipeButton);
+        int xStart = 432; // scaled from 308 for 1920 width
 
-        stockButton = new JButton("Stock");
-        stockButton.setBounds(1366 - standardWidth - 75, 50, standardWidth, standardHeight);
-        add(stockButton);
+        btnWidth = 210; // scaled from 150
+        btnHeight = 42; // scaled from 30
 
-        // Day buttons with placeholders for recipe and missing stock
-        monButton = new JButton("<html>Mon<br><small>Recipe: [None]<br>Missing: 0</small></html>");
-        monButton.setBounds(xOffset, 150, 150, 150);
-        add(monButton);
+        recipeBtn = new JButton("Recipes");
+        recipeBtn.setBounds(105, 70, btnWidth, btnHeight); // scaled from 75, 50
+        add(recipeBtn);
 
-        tueButton = new JButton("<html>Tue<br><small>Recipe: [None]<br>Missing: 0</small></html>");
-        tueButton.setBounds(xOffset + 200, 150, 150, 150);
-        add(tueButton);
+        stockBtn = new JButton("Stock");
+        stockBtn.setBounds(1920 - btnWidth - 105, 70, btnWidth, btnHeight); // scaled from 1366, 75
+        add(stockBtn);
 
-        wedButton = new JButton("<html>Wed<br><small>Recipe: [None]<br>Missing: 0</small></html>");
-        wedButton.setBounds(xOffset + 400, 150, 150, 150);
-        add(wedButton);
+        monBtn = new JButton();
+        monBtn.setBounds(xStart, 210, 210, 210); // scaled from 150, 150, 150
+        add(monBtn);
 
-        thuButton = new JButton("<html>Thu<br><small>Recipe: [None]<br>Missing: 0</small></html>");
-        thuButton.setBounds(xOffset + 600, 150, 150, 150);
-        add(thuButton);
+        tueBtn = new JButton();
+        tueBtn.setBounds(xStart + 280, 210, 210, 210); // scaled from 200, 150, 150
+        add(tueBtn);
 
-        friButton = new JButton("<html>Fri<br><small>Recipe: [None]<br>Missing: 0</small></html>");
-        friButton.setBounds(xOffset + 100, 350, 150, 150);
-        add(friButton);
+        wedBtn = new JButton();
+        wedBtn.setBounds(xStart + 560, 210, 210, 210); // scaled from 400, 150, 150
+        add(wedBtn);
 
-        satButton = new JButton("<html>Sat<br><small>Recipe: [None]<br>Missing: 0</small></html>");
-        satButton.setBounds(xOffset + 300, 350, 150, 150);
-        add(satButton);
+        thuBtn = new JButton();
+        thuBtn.setBounds(xStart + 840, 210, 210, 210); // scaled from 600, 150, 150
+        add(thuBtn);
 
-        sunButton = new JButton("<html>Sun<br><small>Recipe: [None]<br>Missing: 0</small></html>");
-        sunButton.setBounds(xOffset + 500, 350, 150, 150);
-        add(sunButton);
+        friBtn = new JButton();
+        friBtn.setBounds(xStart + 140, 490, 210, 210); // scaled from 100, 350, 150
+        add(friBtn);
 
-        // Bottom buttons
-        listButton = new JButton("View List");
-        listButton.setBounds(75, 768 - standardHeight - 75, 150, 30);
-        add(listButton);
+        satBtn = new JButton();
+        satBtn.setBounds(xStart + 420, 490, 210, 210); // scaled from 300, 350, 150
+        add(satBtn);
 
-        clearButton = new JButton("Clear all selections");
-        clearButton.setBounds(1366 - standardWidth - 75, 768 - standardHeight - 75, 180, 30);
-        add(clearButton);
-        // Clear all day selections
-        clearButton.addActionListener(e -> {
-            // Clear all meals in the MealPlan data structure
-            mealPlan.clearAllMeals();
-            // Reset all day button labels
-            String resetText = "<html>%s<br><small>Recipe: [None]<br>Missing: 0</small></html>";
-            monButton.setText(String.format(resetText, "Mon"));
-            tueButton.setText(String.format(resetText, "Tue"));
-            wedButton.setText(String.format(resetText, "Wed"));
-            thuButton.setText(String.format(resetText, "Thu"));
-            friButton.setText(String.format(resetText, "Fri"));
-            satButton.setText(String.format(resetText, "Sat"));
-            sunButton.setText(String.format(resetText, "Sun"));
+        sunBtn = new JButton();
+        sunBtn.setBounds(xStart + 700, 490, 210, 210); // scaled from 500, 350, 150
+        add(sunBtn);
+
+        listBtn = new JButton("View List");
+        listBtn.setBounds(105, 1080 - btnHeight - 105, 210, 42); // scaled from 75, 768, 150, 30
+        add(listBtn);
+
+        clearBtn = new JButton("Clear all selections");
+        clearBtn.setBounds(1920 - btnWidth - 105, 1080 - btnHeight - 105, 252, 42); // scaled from 1366, 75, 180, 30
+        add(clearBtn);
+
+        clearBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                mealPlan.clearAllMeals();
+                updateDayButtons();
+            }
         });
 
-        // --- Navigation logic ---
-        // Store a reference to the main content for switching back
+        listBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                ShoppingList shoppingList = new ShoppingList();
+                shoppingList.generateList(mealPlan, inventory);
+                ShoppingListDialog dialog = new ShoppingListDialog(GUI.this, shoppingList);
+                dialog.setVisible(true);
+            }
+        });
+
         JPanel mainPanel = new JPanel(null);
         for (Component c : getContentPane().getComponents()) {
             mainPanel.add(c);
         }
-        // Remove all from frame and add mainPanel
         getContentPane().removeAll();
         setContentPane(mainPanel);
         setVisible(true);
 
-        // Action to switch to RecipeListPage
-        recipeButton.addActionListener(new ActionListener() {
-            @Override
+        recipeBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                RecipeListPage recipeListPage = new RecipeListPage(() -> {
-                    setContentPane(mainPanel);
-                    revalidate();
-                    repaint();
+                RecipeListPage recipeListPage = new RecipeListPage(new Runnable() {
+                    public void run() {
+                        setContentPane(mainPanel);
+                        revalidate();
+                        repaint();
+                        updateDayButtons();
+                    }
                 }, recipes, inventory);
+                recipeListPage.setMealPlan(mealPlan);
                 setContentPane(recipeListPage);
                 revalidate();
                 repaint();
             }
         });
-        // Action to switch to StockListPage
-        stockButton.addActionListener(new ActionListener() {
-            @Override
+        stockBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                StockListPage stockListPage = new StockListPage(() -> {
-                    setContentPane(mainPanel);
-                    revalidate();
-                    repaint();
+                StockListPage stockListPage = new StockListPage(new Runnable() {
+                    public void run() {
+                        setContentPane(mainPanel);
+                        revalidate();
+                        repaint();
+                        updateDayButtons();
+                    }
                 }, inventory, leftoverMeals);
+                stockListPage.setMealPlan(mealPlan);
                 setContentPane(stockListPage);
                 revalidate();
                 repaint();
             }
         });
+        updateDayButtons();
+    }
+
+    private void updateDayButtons() {
+        updateDayButton(monBtn, "Monday");
+        updateDayButton(tueBtn, "Tuesday");
+        updateDayButton(wedBtn, "Wednesday");
+        updateDayButton(thuBtn, "Thursday");
+        updateDayButton(friBtn, "Friday");
+        updateDayButton(satBtn, "Saturday");
+        updateDayButton(sunBtn, "Sunday");
+    }
+
+    private void updateDayButton(JButton btn, String day) {
+        Recipe recipe = mealPlan.getMeal(day);
+        String recipeName = (recipe != null) ? recipe.getName() : "[None]";
+        int missing = 0;
+        if (recipe != null) {
+            Ingredient[] ings = recipe.getIngredients();
+            for (Ingredient ing : ings) {
+                double have = inventory.getQuantity(ing);
+                if (have < ing.getQuantity()) missing++;
+            }
+        }
+        btn.setText("<html>" + day.substring(0, 3) + "<br>Recipe: " + recipeName + "<br>Missing: " + missing + "</html>");
     }
 }
