@@ -2,6 +2,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Manages weekly meal planning - maps days to recipes/leftovers.
+ * Auto-saves to file whenever changes are made.
+ */
 public class MealPlan {
     private HashMap<String, Recipe> weeklyMealPlan = new HashMap<>();
     private Runnable onChange;

@@ -1,7 +1,12 @@
 import java.util.List;
 import java.util.ArrayList;
 
+/**
+ * Provides recipe recommendations based on various criteria.
+ * Currently supports filtering by inventory, season, calories, and tags.
+ */
 public class RecipeRecommender {
+    // Find recipes you can make with current inventory
     public List<Recipe> recommendByInventory(Inventory inventory, RecipeList recipes) {
         List<Recipe> result = new ArrayList<>();
         for (Recipe recipe : recipes) {

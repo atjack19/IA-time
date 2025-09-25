@@ -147,9 +147,12 @@ public class GUI extends JFrame {
         updateDayButton(sunBtn, "Sunday");
     }
 
+    // Update day button to show assigned recipe and missing ingredient count
     private void updateDayButton(JButton btn, String day) {
         Recipe recipe = mealPlan.getMeal(day);
         String recipeName = (recipe != null) ? recipe.getName() : "[None]";
+        
+        // Count how many ingredients are missing from inventory
         int missing = 0;
         if (recipe != null) {
             Ingredient[] ings = recipe.getIngredients();
@@ -158,6 +161,8 @@ public class GUI extends JFrame {
                 if (have < ing.getQuantity()) missing++;
             }
         }
+        
+        // Display day, recipe name, and missing count
         btn.setText("<html>" + day.substring(0, 3) + "<br>Recipe: " + recipeName + "<br>Missing: " + missing + "</html>");
     }
 }

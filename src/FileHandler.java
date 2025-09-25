@@ -5,6 +5,10 @@ import java.util.Map;
 
 //Recipe Name,Book,Page,ingredient1:quantity1:unit1;ingredient2:quantity2:unit2,calories,...
 
+/**
+ * Handles all file I/O operations for the application.
+ * Manages CSV-style text files for recipes, inventory, leftovers, and meal plans.
+ */
 public class FileHandler {
     public static ArrayList<String> recipeFileRead() {
         try {
@@ -109,6 +113,8 @@ public class FileHandler {
         return recipes;
     }
 
+    // Parse CSV line: name,book,page,ingredients,nutrition,tags
+    // Ingredients format: "name:qty:unit;name:qty:unit"
     private static Recipe parseRecipeLine(String line) {
         try {
             // 0- name | 1- book | 2- page | 3- ingredients | 4--8 nutrition | 9- tags
@@ -120,7 +126,7 @@ public class FileHandler {
             String book = parts[1];
             int page = Integer.parseInt(parts[2]);
 
-            // Parse ingredients
+            // Parse ingredients: "name:qty:unit;name:qty:unit"
             String[] ingredientStrings = parts[3].split(";");
             List<Ingredient> ingredientList = new ArrayList<>();
 

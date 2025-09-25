@@ -1,3 +1,7 @@
+/**
+ * Represents a recipe with ingredients, nutrition info, and metadata.
+ * Used for both regular recipes and leftover meals.
+ */
 public class Recipe {
     private String name;
     private String book;
