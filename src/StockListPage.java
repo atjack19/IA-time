@@ -48,6 +48,65 @@ public class StockListPage extends ListPage<Object> {
                 if (row != -1) openEditDialog(row);
             }
         });
+        deleteBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                int row = table.getSelectedRow();
+                if (row == -1) return;
+                String name = String.valueOf(table.getValueAt(row, 1));
+                String type = String.valueOf(table.getValueAt(row, 2));
+                int confirm = JOptionPane.showConfirmDialog(
+                        (JFrame) SwingUtilities.getWindowAncestor(StockListPage.this),
+                        "Delete '" + name + "'?",
+                        "Confirm Delete",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.WARNING_MESSAGE
+                );
+                if (confirm != JOptionPane.YES_OPTION) return;
+                if ("Ingredient".equals(type)) {
+                    String unit = String.valueOf(table.getValueAt(row, 3));
+                    Ingredient target = null;
+                    for (Ingredient ing : inventory.getAllIngredients().keySet()) {
+                        if (ing.getName().equals(name) && ing.getUnit().equals(unit)) {
+                            target = ing;
+                            break;
+                        }
+                    }
+                    if (target != null) {
+                        // Remove entirely from inventory and UI list
+                        inventory.deleteIngredient(target);
+                        for (Iterator<Object> it = allItems.iterator(); it.hasNext();) {
+                            Object obj = it.next();
+                            if (obj instanceof Ingredient) {
+                                Ingredient ing = (Ingredient) obj;
+                                if (ing.getName().equals(name) && ing.getUnit().equals(unit)) {
+                                    it.remove();
+                                    break;
+                                }
+                            }
+                        }
+                        FileHandler.saveInventory(inventory);
+                        updateTable(allItems);
+                    }
+                } else if ("Leftover".equals(type)) {
+                    LeftoverMeal target = null;
+                    for (LeftoverMeal m : leftoverMeals) {
+                        if (m.getName().equals(name)) { target = m; break; }
+                    }
+                    if (target != null) {
+                        leftoverMeals.remove(target);
+                        for (Iterator<Object> it = allItems.iterator(); it.hasNext();) {
+                            Object obj = it.next();
+                            if (obj instanceof LeftoverMeal && ((LeftoverMeal)obj).getName().equals(name)) {
+                                it.remove();
+                                break;
+                            }
+                        }
+                        FileHandler.saveLeftoverMeals(leftoverMeals);
+                        updateTable(allItems);
+                    }
+                }
+            }
+        });
         JButton returnBtn = (JButton)((JPanel)getComponent(1)).getComponent(1);
         returnBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -194,6 +253,43 @@ public class StockListPage extends ListPage<Object> {
 
     @Override
     protected void openEditDialog(int row) {
+        // Handle adding new stock items
+        if (row == -1) {
+            Object[] options = new Object[]{"Ingredient", "Leftover", "Cancel"};
+            int choice = JOptionPane.showOptionDialog(
+                    (JFrame) SwingUtilities.getWindowAncestor(this),
+                    "What would you like to add?",
+                    "Add Stock",
+                    JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    options,
+                    options[0]
+            );
+            if (choice == 0) { // Ingredient
+                EditIngredientDialog dialog = new EditIngredientDialog((JFrame) SwingUtilities.getWindowAncestor(this), null, new IngredientSaveListener() {
+                    public void onSave(Ingredient ing, double qty) {
+                        inventory.addIngredient(ing, qty);
+                        allItems.add(ing);
+                        FileHandler.saveInventory(inventory);
+                        updateTable(allItems);
+                    }
+                });
+                dialog.setVisible(true);
+            } else if (choice == 1) { // Leftover
+                EditLeftoverDialog dialog = new EditLeftoverDialog((JFrame) SwingUtilities.getWindowAncestor(this), null, new LeftoverSaveListener() {
+                    public void onSave(LeftoverMeal meal) {
+                        leftoverMeals.add(meal);
+                        allItems.add(meal);
+                        FileHandler.saveLeftoverMeals(leftoverMeals);
+                        updateTable(allItems);
+                    }
+                });
+                dialog.setVisible(true);
+            }
+            return;
+        }
+
         String name = table.getValueAt(row, 1).toString(); // Changed to get name from column 1
         Object item = null;
         for (Object obj : allItems) {
@@ -214,6 +310,7 @@ public class StockListPage extends ListPage<Object> {
                     inventory.removeIngredient(ing, qty);
                     inventory.addIngredient(ing, qty);
                     allItems.set(allItems.indexOf(ing), ing);
+                    FileHandler.saveInventory(inventory);
                     updateTable(allItems);
                 }
             });
@@ -224,6 +321,7 @@ public class StockListPage extends ListPage<Object> {
                 public void onSave(LeftoverMeal meal) {
                     leftoverMeals.set(leftoverMeals.indexOf(meal), meal);
                     allItems.set(allItems.indexOf(meal), meal);
+                    FileHandler.saveLeftoverMeals(leftoverMeals);
                     updateTable(allItems);
                 }
             });

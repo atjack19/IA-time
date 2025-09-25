@@ -19,7 +19,12 @@ public class Inventory {
         if (currentQty == null || currentQty < quantity) {
             return false;
         }
-        ingredients.put(ingredient, currentQty - quantity);
+        double newQty = currentQty - quantity;
+        if (newQty <= 0) {
+            ingredients.remove(ingredient);
+        } else {
+            ingredients.put(ingredient, newQty);
+        }
         return true;
     }
     
@@ -30,5 +35,10 @@ public class Inventory {
 
     public Map<Ingredient, Double> getAllIngredients() {
         return new HashMap<>(ingredients);
+    }
+
+    // Remove ingredient entry entirely
+    public void deleteIngredient(Ingredient ingredient) {
+        ingredients.remove(ingredient);
     }
 }
