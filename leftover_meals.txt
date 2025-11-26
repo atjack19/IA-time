@@ -4,4 +4,5 @@ Test Leftover,3,350,15,45,8,20,quick;
 Test Leftover,3,350,15,45,8,20,quick;
 Test Leftover,3,350,15,45,8,20,quick;
 Lasagna,2,0,0,0,0,0,pasta;
-Pie,2,0,0,0,0,0,
+Chicken Pie,1,0,0,0,0,0,healthy;
+Spaghetti Bolognese,2,0,0,0,0,0,pasta;

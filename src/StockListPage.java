@@ -458,8 +458,13 @@ public class StockListPage extends ListPage<Object> {
                             return;
                         }
                         
-                        // Validate tags format (optional, but if provided must be valid)
-                        String[] tags = tagsText.isEmpty() ? new String[0] : tagsText.split(",\\s*");
+                        // Validate tags - require at least one tag
+                        if (tagsText.isEmpty()) {
+                            JOptionPane.showMessageDialog(EditLeftoverDialog.this, "Tags cannot be empty. Please provide at least one tag.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+                        
+                        String[] tags = tagsText.split(",\\s*");
                         for (int i = 0; i < tags.length; i++) {
                             tags[i] = tags[i].trim();
                             if (tags[i].isEmpty()) {

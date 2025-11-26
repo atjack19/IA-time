@@ -4,9 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0dff23fb-a8c1-48c8-8718-928e25bc1479" name="Changes" comment="Worked on GUI Main Page 45mns">
-      <change beforePath="$PROJECT_DIR$/src/GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+    <list default="true" id="0dff23fb-a8c1-48c8-8718-928e25bc1479" name="Changes" comment="Final version">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/inventory.txt" beforeDir="false" afterPath="$PROJECT_DIR$/inventory.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leftover_meals.txt" beforeDir="false" afterPath="$PROJECT_DIR$/leftover_meals.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recipes.txt" beforeDir="false" afterPath="$PROJECT_DIR$/recipes.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/StockListPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/StockListPage.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,42 +32,45 @@
     &quot;assignee&quot;: &quot;atjack19&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/atjack19/IA-time.git",
-    "accountId": "88fb452e-e39f-4949-af95-58dca0be726f"
+  <component name="GithubDefaultAccount">
+    <option name="defaultAccountId" value="dda3cbb7-810c-4b81-b2af-53f7c2d9ce47" />
+  </component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/atjack19/IA-time.git&quot;,
+    &quot;accountId&quot;: &quot;dda3cbb7-810c-4b81-b2af-53f7c2d9ce47&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
 }</component>
   <component name="ProjectId" id="2uqxCiQgmfnxvEx6fLyFoKUnDsx" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+  <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/jackcotton/IdeaProjects/IA-time&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Main.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
+    "junie.onboarding.icon.badge.shown": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/home/jackcotton/IdeaProjects/IA-time",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
@@ -85,8 +91,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-fbdcb00ec9e3-intellij.indexing.shared.core-IU-251.25410.129" />
-        <option value="bundled-js-predefined-d6986cc7102b-6a121458b545-JavaScript-IU-251.25410.129" />
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.25557.131" />
+        <option value="bundled-js-predefined-d6986cc7102b-b598e85cdad2-JavaScript-IU-252.25557.131" />
       </set>
     </attachedChunks>
   </component>
@@ -119,6 +125,12 @@
       <workItem from="1749466909923" duration="13357000" />
       <workItem from="1749484758878" duration="26511000" />
       <workItem from="1750179440754" duration="1498000" />
+      <workItem from="1757535947874" duration="716000" />
+      <workItem from="1757538959897" duration="160000" />
+      <workItem from="1757539132127" duration="1962000" />
+      <workItem from="1764167381733" duration="920000" />
+      <workItem from="1764168468607" duration="1075000" />
+      <workItem from="1764184121433" duration="4515000" />
     </task>
     <task id="LOCAL-00001" summary="yabbadabbadoo 2">
       <option name="closed" value="true" />
@@ -215,6 +227,11 @@
     <MESSAGE value="Lots of work implementing files, fixing search, implementing shopping list, recipe recommendations... 3hrs" />
     <MESSAGE value="general troubleshooting and maintenance 1hr?" />
     <MESSAGE value="Worked on GUI Main Page 45mns" />
-    <option name="LAST_COMMIT_MESSAGE" value="Worked on GUI Main Page 45mns" />
+    <MESSAGE value="Final version" />
+    <option name="LAST_COMMIT_MESSAGE" value="Final version" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>
