@@ -1,7 +1,8 @@
 eggs:12.0:large
-Flour:1000.0:g
-butter:250.0:g
 milk:1000.0:ml
+butter:250.0:g
+Flour:3000.0:g
+test:50.0:g
 test_ingredient:200.0:g
-cheese:300.0:g
 sugar:500.0:g
+cheese:300.0:g

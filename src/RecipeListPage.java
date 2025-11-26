@@ -201,17 +201,44 @@ public class RecipeListPage extends ListPage<Recipe> {
     @Override
     protected void openEditDialog(int row) {
         Recipe recipe = (row == -1) ? new Recipe("", "", 0, new Ingredient[0], 0, 0, 0, 0, 0, new String[0]) : allItems.get(row);
+        final Recipe recipeToDelete = recipe; // Store reference for deletion
         EditRecipeDialog dialog = new EditRecipeDialog((JFrame) SwingUtilities.getWindowAncestor(this), recipe, new Runnable() {
             public void run() {
-                if (row == -1) allItems.add(recipe);
-                FileHandler.saveAllRecipes((RecipeList) allItems);
-                updateTable(allItems);
+                if (row == -1) {
+                    recipesRef.add(recipe);
+                }
+                FileHandler.saveAllRecipes(recipesRef);
+                updateTable(recipesRef);
             }
         }, new Runnable() {
             public void run() {
-                if (row != -1) allItems.remove(recipe);
-                FileHandler.saveAllRecipes((RecipeList) allItems);
-                updateTable(allItems);
+                if (row != -1 && recipeToDelete != null) {
+                    // Always remove by matching name/book/page to ensure we find the right recipe
+                    // even if the object reference doesn't match (e.g., from filtered view)
+                    String nameToDelete = recipeToDelete.getName();
+                    String bookToDelete = recipeToDelete.getBook();
+                    int pageToDelete = recipeToDelete.getPage();
+                    
+                    boolean found = false;
+                    for (int i = 0; i < recipesRef.size(); i++) {
+                        Recipe r = recipesRef.get(i);
+                        if (r.getName().equals(nameToDelete) && 
+                            r.getBook().equals(bookToDelete) && 
+                            r.getPage() == pageToDelete) {
+                            recipesRef.remove(i);
+                            found = true;
+                            break;
+                        }
+                    }
+                    
+                    if (!found) {
+                        JOptionPane.showMessageDialog(null, "Recipe not found in list. It may have already been deleted.", "Delete Error", JOptionPane.WARNING_MESSAGE);
+                    }
+                }
+                FileHandler.saveAllRecipes(recipesRef);
+                // Update allItems to point to recipesRef and refresh table
+                allItems = recipesRef;
+                updateTable(recipesRef);
             }
         });
         dialog.setVisible(true);
@@ -266,45 +293,133 @@ public class RecipeListPage extends ListPage<Recipe> {
 
     private class EditRecipeDialog extends BaseEditDialog {
         private Recipe recipe;
+        private Runnable onUpdateCallback;
+        private Runnable onDeleteCallback;
         private JTextField nameField, bookField, pageField, calField, proteinField, carbField, sugarField, fatField, tagsField, ingsField;
         public EditRecipeDialog(JFrame parent, Recipe recipe, Runnable onUpdate, Runnable onDelete) {
             super(parent, "Edit Recipe");
             this.recipe = recipe;
+            this.onUpdateCallback = onUpdate;
+            this.onDeleteCallback = onDelete;
             fillFields();
             saveButton.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     try {
-                        recipe.setName(nameField.getText().trim());
-                        recipe.setBook(bookField.getText().trim());
-                        recipe.setPage(Integer.parseInt(pageField.getText().trim()));
-                        recipe.setCalories(Integer.parseInt(calField.getText().trim()));
-                        recipe.setProtein(Integer.parseInt(proteinField.getText().trim()));
-                        recipe.setCarbs(Integer.parseInt(carbField.getText().trim()));
-                        recipe.setSugars(Integer.parseInt(sugarField.getText().trim()));
-                        recipe.setFats(Integer.parseInt(fatField.getText().trim()));
-                        recipe.setTags(tagsField.getText().split(", ?"));
-                        String[] ingParts = ingsField.getText().split("; ?");
-                        Ingredient[] ings = new Ingredient[ingParts.length];
-                        for (int i = 0; i < ingParts.length; i++) {
-                            String[] parts = ingParts[i].split(":");
-                            if (parts.length == 3) {
-                                ings[i] = new Ingredient(parts[0], Double.parseDouble(parts[1]), parts[2]);
+                        String name = nameField.getText().trim();
+                        String book = bookField.getText().trim();
+                        String pageText = pageField.getText().trim();
+                        String calText = calField.getText().trim();
+                        String proteinText = proteinField.getText().trim();
+                        String carbText = carbField.getText().trim();
+                        String sugarText = sugarField.getText().trim();
+                        String fatText = fatField.getText().trim();
+                        String tagsText = tagsField.getText().trim();
+                        String ingsText = ingsField.getText().trim();
+                        
+                        // Validate name
+                        if (name.isEmpty()) {
+                            JOptionPane.showMessageDialog(EditRecipeDialog.this, "Name cannot be empty.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+                        
+                        // Validate book
+                        if (book.isEmpty()) {
+                            JOptionPane.showMessageDialog(EditRecipeDialog.this, "Book cannot be empty.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+                        
+                        // Validate page (must be > 0)
+                        if (pageText.isEmpty()) {
+                            JOptionPane.showMessageDialog(EditRecipeDialog.this, "Page cannot be empty.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+                        int page = Integer.parseInt(pageText);
+                        if (page <= 0) {
+                            JOptionPane.showMessageDialog(EditRecipeDialog.this, "Page must be greater than zero.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+                        
+                        // Validate nutrition values (must be >= 0)
+                        if (calText.isEmpty() || proteinText.isEmpty() || carbText.isEmpty() || sugarText.isEmpty() || fatText.isEmpty()) {
+                            JOptionPane.showMessageDialog(EditRecipeDialog.this, "All nutrition values (calories, protein, carbs, sugars, fats) must be provided.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+                        
+                        int calories = Integer.parseInt(calText);
+                        int protein = Integer.parseInt(proteinText);
+                        int carbs = Integer.parseInt(carbText);
+                        int sugars = Integer.parseInt(sugarText);
+                        int fats = Integer.parseInt(fatText);
+                        
+                        if (calories <= 0 || protein <= 0 || carbs <= 0 || sugars <= 0 || fats <= 0) {
+                            JOptionPane.showMessageDialog(EditRecipeDialog.this, "All nutrition values (calories, protein, carbs, sugars, fats) must be greater than zero.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+                        
+                        // Validate tags format (optional, but if provided must be valid)
+                        String[] tags = tagsText.isEmpty() ? new String[0] : tagsText.split(",\\s*");
+                        for (int i = 0; i < tags.length; i++) {
+                            tags[i] = tags[i].trim();
+                            if (tags[i].isEmpty()) {
+                                JOptionPane.showMessageDialog(EditRecipeDialog.this, "Tags cannot contain empty values. Use comma-separated format: tag1, tag2, tag3", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                                return;
                             }
                         }
-                        recipe.setIngredients(ings);
-                        onUpdate.run();
+                        
+                        // Validate ingredients format
+                        java.util.List<Ingredient> ingList = new java.util.ArrayList<>();
+                        if (!ingsText.isEmpty()) {
+                            String[] ingParts = ingsText.split(";");
+                            for (String ingPart : ingParts) {
+                                ingPart = ingPart.trim();
+                                if (ingPart.isEmpty()) continue;
+                                
+                                String[] parts = ingPart.split(":");
+                                if (parts.length != 3) {
+                                    JOptionPane.showMessageDialog(EditRecipeDialog.this, "Invalid ingredient format. Use: name:quantity:unit\nExample: flour:500:g", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                                    return;
+                                }
+                                
+                                String ingName = parts[0].trim();
+                                String qtyText = parts[1].trim();
+                                String unit = parts[2].trim();
+                                
+                                if (ingName.isEmpty() || unit.isEmpty()) {
+                                    JOptionPane.showMessageDialog(EditRecipeDialog.this, "Ingredient name and unit cannot be empty.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                                    return;
+                                }
+                                
+                                if (qtyText.isEmpty()) {
+                                    JOptionPane.showMessageDialog(EditRecipeDialog.this, "Ingredient quantity cannot be empty.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                                    return;
+                                }
+                                
+                                double qty = Double.parseDouble(qtyText);
+                                if (qty <= 0) {
+                                    JOptionPane.showMessageDialog(EditRecipeDialog.this, "Ingredient quantity must be greater than zero.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                                    return;
+                                }
+                                
+                                ingList.add(new Ingredient(ingName, qty, unit));
+                            }
+                        }
+                        
+                        recipe.setName(name);
+                        recipe.setBook(book);
+                        recipe.setPage(page);
+                        recipe.setCalories(calories);
+                        recipe.setProtein(protein);
+                        recipe.setCarbs(carbs);
+                        recipe.setSugars(sugars);
+                        recipe.setFats(fats);
+                        recipe.setTags(tags);
+                        recipe.setIngredients(ingList.toArray(new Ingredient[0]));
+                        onUpdateCallback.run();
                         dispose();
+                    } catch (NumberFormatException ex) {
+                        JOptionPane.showMessageDialog(EditRecipeDialog.this, "Invalid number format. Please check all numeric fields.", "Validation Error", JOptionPane.ERROR_MESSAGE);
                     } catch (Exception ex) {
                         JOptionPane.showMessageDialog(EditRecipeDialog.this, "Invalid input: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                    }
-                }
-            });
-            deleteButton.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    int confirm = JOptionPane.showConfirmDialog(EditRecipeDialog.this, "Are you sure you want to delete this recipe?", "Confirm Delete", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-                    if (confirm == JOptionPane.YES_OPTION) {
-                        onDelete.run();
-                        dispose();
                     }
                 }
             });
@@ -349,8 +464,25 @@ public class RecipeListPage extends ListPage<Recipe> {
             fieldsPanel.add(ingsField);
         }
         @Override
-        protected void onSave() {}
+        protected void onSave() {
+            // Save is handled by the custom saveButton listener above
+        }
         @Override
-        protected void onDelete() {}
+        protected void onDelete() {
+            if (onDeleteCallback == null) {
+                JOptionPane.showMessageDialog(EditRecipeDialog.this, "Delete callback is not set.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            int confirm = JOptionPane.showConfirmDialog(EditRecipeDialog.this, "Are you sure you want to delete this recipe?", "Confirm Delete", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+            if (confirm == JOptionPane.YES_OPTION) {
+                try {
+                    onDeleteCallback.run();
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(EditRecipeDialog.this, "Error deleting recipe: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    ex.printStackTrace();
+                }
+                dispose();
+            }
+        }
     }
 } 

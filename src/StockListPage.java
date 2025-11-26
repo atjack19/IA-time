@@ -251,8 +251,8 @@ public class StockListPage extends ListPage<Object> {
         return new String[]{"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
     }
 
-    @Override
-    protected void openEditDialog(int row) {
+        @Override
+        protected void openEditDialog(int row) {
         // Handle adding new stock items
         if (row == -1) {
             Object[] options = new Object[]{"Ingredient", "Leftover", "Cancel"};
@@ -267,14 +267,19 @@ public class StockListPage extends ListPage<Object> {
                     options[0]
             );
             if (choice == 0) { // Ingredient
-                EditIngredientDialog dialog = new EditIngredientDialog((JFrame) SwingUtilities.getWindowAncestor(this), null, new IngredientSaveListener() {
-                    public void onSave(Ingredient ing, double qty) {
-                        inventory.addIngredient(ing, qty);
-                        allItems.add(ing);
-                        FileHandler.saveInventory(inventory);
-                        updateTable(allItems);
-                    }
-                });
+                EditIngredientDialog dialog = new EditIngredientDialog(
+                        (JFrame) SwingUtilities.getWindowAncestor(this),
+                        null,
+                        0.0,
+                        new IngredientSaveListener() {
+                            public void onSave(Ingredient ing, double qty) {
+                                inventory.addIngredient(ing, qty);
+                                // Rebuild stock list from inventory to avoid duplicate entries
+                                allItems = getAllStock(inventory, leftoverMeals);
+                                FileHandler.saveInventory(inventory);
+                                updateTable(allItems);
+                            }
+                        });
                 dialog.setVisible(true);
             } else if (choice == 1) { // Leftover
                 EditLeftoverDialog dialog = new EditLeftoverDialog((JFrame) SwingUtilities.getWindowAncestor(this), null, new LeftoverSaveListener() {
@@ -304,16 +309,21 @@ public class StockListPage extends ListPage<Object> {
         if (item == null) return;
         if (item instanceof Ingredient) {
             Ingredient ing = (Ingredient) item;
-            double qty = inventory.getAllIngredients().getOrDefault(ing, 0.0);
-            EditIngredientDialog dialog = new EditIngredientDialog((JFrame) SwingUtilities.getWindowAncestor(this), ing, new IngredientSaveListener() {
-                public void onSave(Ingredient ing, double qty) {
-                    inventory.removeIngredient(ing, qty);
-                    inventory.addIngredient(ing, qty);
-                    allItems.set(allItems.indexOf(ing), ing);
-                    FileHandler.saveInventory(inventory);
-                    updateTable(allItems);
-                }
-            });
+            double currentQty = inventory.getAllIngredients().getOrDefault(ing, 0.0);
+            EditIngredientDialog dialog = new EditIngredientDialog(
+                    (JFrame) SwingUtilities.getWindowAncestor(this),
+                    ing,
+                    currentQty,
+                    new IngredientSaveListener() {
+                        public void onSave(Ingredient newIng, double newQty) {
+                            // Remove the old ingredient entry completely, then add the edited one
+                            inventory.deleteIngredient(ing);
+                            inventory.addIngredient(newIng, newQty);
+                            allItems.set(allItems.indexOf(ing), newIng);
+                            FileHandler.saveInventory(inventory);
+                            updateTable(allItems);
+                        }
+                    });
             dialog.setVisible(true);
         } else if (item instanceof LeftoverMeal) {
             LeftoverMeal meal = (LeftoverMeal) item;
@@ -332,7 +342,7 @@ public class StockListPage extends ListPage<Object> {
     private class EditIngredientDialog extends JDialog {
         private JTextField nameField, unitField, qtyField;
         private JButton saveBtn, cancelBtn;
-        public EditIngredientDialog(JFrame parent, Ingredient ing, IngredientSaveListener onSave) {
+        public EditIngredientDialog(JFrame parent, Ingredient ing, double currentQty, IngredientSaveListener onSave) {
             super(parent, (ing == null ? "Add Ingredient" : "Edit Ingredient"), true);
             setLayout(new GridLayout(4, 2));
             add(new JLabel("Name:"));
@@ -342,7 +352,7 @@ public class StockListPage extends ListPage<Object> {
             unitField = new JTextField(ing == null ? "" : ing.getUnit());
             add(unitField);
             add(new JLabel("Quantity:"));
-            qtyField = new JTextField(ing == null ? "" : String.valueOf(ing.getQuantity()));
+            qtyField = new JTextField(ing == null ? "" : String.valueOf(currentQty));
             add(qtyField);
             saveBtn = new JButton("Save");
             cancelBtn = new JButton("Cancel");
@@ -355,10 +365,37 @@ public class StockListPage extends ListPage<Object> {
                     try {
                         String name = nameField.getText().trim();
                         String unit = unitField.getText().trim();
-                        double qty = Double.parseDouble(qtyField.getText().trim());
+                        String qtyText = qtyField.getText().trim();
+                        
+                        // Validate name
+                        if (name.isEmpty()) {
+                            JOptionPane.showMessageDialog(EditIngredientDialog.this, "Name cannot be empty.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+                        
+                        // Validate unit
+                        if (unit.isEmpty()) {
+                            JOptionPane.showMessageDialog(EditIngredientDialog.this, "Unit cannot be empty.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+                        
+                        // Validate quantity
+                        if (qtyText.isEmpty()) {
+                            JOptionPane.showMessageDialog(EditIngredientDialog.this, "Quantity cannot be empty.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+                        
+                        double qty = Double.parseDouble(qtyText);
+                        if (qty <= 0) {
+                            JOptionPane.showMessageDialog(EditIngredientDialog.this, "Quantity must be greater than zero.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+                        
                         Ingredient newIng = new Ingredient(name, qty, unit);
                         onSave.onSave(newIng, qty);
                         dispose();
+                    } catch (NumberFormatException ex) {
+                        JOptionPane.showMessageDialog(EditIngredientDialog.this, "Quantity must be a valid number.", "Validation Error", JOptionPane.ERROR_MESSAGE);
                     } catch (Exception ex) {
                         JOptionPane.showMessageDialog(EditIngredientDialog.this, "Invalid input: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                     }
@@ -376,31 +413,73 @@ public class StockListPage extends ListPage<Object> {
     }
 
     private class EditLeftoverDialog extends JDialog {
-        private JTextField nameField, portionsField;
+        private JTextField nameField, portionsField, tagsField;
         private JButton saveBtn, cancelBtn;
         public EditLeftoverDialog(JFrame parent, LeftoverMeal meal, LeftoverSaveListener onSave) {
             super(parent, (meal == null ? "Add Leftover" : "Edit Leftover"), true);
-            setLayout(new GridLayout(3, 2));
+            setLayout(new GridLayout(4, 2));
             add(new JLabel("Name:"));
             nameField = new JTextField(meal == null ? "" : meal.getName());
             add(nameField);
             add(new JLabel("Portions:"));
             portionsField = new JTextField(meal == null ? "" : String.valueOf(meal.getPortions()));
             add(portionsField);
+            add(new JLabel("Tags (comma separated):"));
+            tagsField = new JTextField(meal == null ? "" : String.join(", ", meal.getTags()));
+            add(tagsField);
             saveBtn = new JButton("Save");
             cancelBtn = new JButton("Cancel");
             add(saveBtn);
             add(cancelBtn);
-            setSize(250, 150);
+            setSize(350, 200);
             setLocationRelativeTo(parent);
             saveBtn.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     try {
                         String name = nameField.getText().trim();
-                        int portions = Integer.parseInt(portionsField.getText().trim());
-                        LeftoverMeal newMeal = new LeftoverMeal(name, portions, 0, 0, 0, 0, 0, new String[0]);
-                        onSave.onSave(newMeal);
+                        String portionsText = portionsField.getText().trim();
+                        String tagsText = tagsField.getText().trim();
+                        
+                        // Validate name
+                        if (name.isEmpty()) {
+                            JOptionPane.showMessageDialog(EditLeftoverDialog.this, "Name cannot be empty.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+                        
+                        // Validate portions
+                        if (portionsText.isEmpty()) {
+                            JOptionPane.showMessageDialog(EditLeftoverDialog.this, "Portions cannot be empty.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+                        
+                        int portions = Integer.parseInt(portionsText);
+                        if (portions <= 0) {
+                            JOptionPane.showMessageDialog(EditLeftoverDialog.this, "Portions must be greater than zero.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+                        
+                        // Validate tags format (optional, but if provided must be valid)
+                        String[] tags = tagsText.isEmpty() ? new String[0] : tagsText.split(",\\s*");
+                        for (int i = 0; i < tags.length; i++) {
+                            tags[i] = tags[i].trim();
+                            if (tags[i].isEmpty()) {
+                                JOptionPane.showMessageDialog(EditLeftoverDialog.this, "Tags cannot contain empty values. Use comma-separated format: tag1, tag2, tag3", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                                return;
+                            }
+                        }
+
+                        if (meal == null) {
+                            LeftoverMeal newMeal = new LeftoverMeal(name, portions, 0, 0, 0, 0, 0, tags);
+                            onSave.onSave(newMeal);
+                        } else {
+                            meal.setName(name);
+                            meal.setPortions(portions);
+                            meal.setTags(tags);
+                            onSave.onSave(meal);
+                        }
                         dispose();
+                    } catch (NumberFormatException ex) {
+                        JOptionPane.showMessageDialog(EditLeftoverDialog.this, "Portions must be a valid integer.", "Validation Error", JOptionPane.ERROR_MESSAGE);
                     } catch (Exception ex) {
                         JOptionPane.showMessageDialog(EditLeftoverDialog.this, "Invalid input: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                     }
